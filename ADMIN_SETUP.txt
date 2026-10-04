@@ -1,0 +1,18 @@
+KLARO KI – ADMIN-LOGIN
+
+Die Status-Toolbar ist jetzt nur nach erfolgreicher Admin-Anmeldung sichtbar.
+
+Für Vercel müssen diese drei Environment Variables gesetzt werden:
+
+ADMIN_EMAIL=deine-admin-email@example.com
+ADMIN_PASSWORD=ein-starkes-admin-passwort
+ADMIN_SESSION_SECRET=ein-langes-zufaelliges-geheimnis
+
+Alle drei Variablen als Production (und bei Bedarf Preview) anlegen.
+Danach neu deployen.
+
+Admin-Login:
+/admin.html
+
+Die Session ist 8 Stunden gültig. Das Session-Cookie ist HttpOnly und wird serverseitig signiert.
+Das Admin-Passwort wird nicht in HTML oder JavaScript gespeichert.

@@ -1,0 +1,9 @@
+Klaro KI – korrigierte Header-Version
+
+Der Header bleibt wieder im ursprünglichen Klaro-Stil:
+- Klaro KI Branding im Header
+- keine Premium-/Werbepartner-Buttons im Header
+
+Premium-Mitgliedschaft und Werbepartnerschaft stehen direkt UNTER dem Header.
+Der eigentliche Seitenname/hero beginnt danach wieder wie in der bisherigen Gestaltung.
+Impressum: impressum.html

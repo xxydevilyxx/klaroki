@@ -1,0 +1,11 @@
+Klaro KI Business Plus
+
+Enthaltene Einnahmewege:
+1. Premium-Mitgliedschaft – werbefrei und erweiterte Funktionen.
+2. Direkt-Werbepartnerschaften – klar gekennzeichnet und getrennt von Antworten.
+3. Politische Themen-Dossiers – Anfrage/Verkauf separat.
+4. B2B-Angebote – individuelle Recherche-/Wissenslösungen.
+
+Wichtig:
+Die ZIP enthält noch keine echte Zahlungsabwicklung. Premium sollte erst nach serverseitiger Prüfung eines Zahlungsstatus freigeschaltet werden.
+Kontaktadressen premium@klaroki.de und partner@klaroki.de vor dem Livegang auf echte Adressen ändern.

@@ -1,0 +1,41 @@
+KLARO KI – ANALYTICS SETUP
+
+Die Admin-Analyse speichert nur pseudonyme/aggregierte Nutzungsdaten und ist an die vorhandene CMP-Einwilligung für Messung gebunden.
+
+1. Supabase
+- Supabase öffnen.
+- SQL Editor öffnen.
+- Den Inhalt von analytics-schema.sql vollständig ausführen.
+
+2. Vercel Environment Variables
+Zusätzlich zu den bereits vorhandenen Variablen benötigt das Projekt:
+
+SUPABASE_URL=https://iiogaaolzzpveefthdxj.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=<Supabase Service Role Key>
+
+WICHTIG: SUPABASE_SERVICE_ROLE_KEY niemals in index.html oder app.js eintragen. Der Schlüssel gehört ausschließlich in Vercel Environment Variables.
+
+3. Danach neu deployen.
+
+Die Statistikseite im Admin-Bereich zeigt danach u.a.:
+- Besucher (anonyme, wiedererkennbare Besucher-ID nach Mess-Einwilligung)
+- Sitzungen
+- Seitenaufrufe
+- KI-Interaktionen
+- erfolgreiche/fehlgeschlagene KI-Anfragen
+- durchschnittliche Sitzungsdauer
+- gesamte Sitzungszeit
+- durchschnittliche Antwort-/Recherchezeit der KI
+- Endgeräte: Desktop / Mobile / Tablet
+- Browser
+- Betriebssystem
+- Bildschirmauflösung
+- Browsersprache
+- Bildschirmauflösung
+- Länder auf grober Ebene, soweit Vercel diese Information bereitstellt
+- Referrer / Zugriffsquellen
+- aufgerufene Seiten
+- UI-Interaktionen
+- Tagesverlauf
+
+Es werden keine IP-Adressen gespeichert und keine Texte der gestellten KI-Fragen gespeichert.

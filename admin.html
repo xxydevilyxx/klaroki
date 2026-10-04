@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b4ca8">
+<title>Klaro KI – Admin</title>
+<!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
+<script type="text/javascript" async=true>
+(function() {
+  var host = "www.themoneytizer.de";
+  var element = document.createElement('script');
+  var firstScript = document.getElementsByTagName('script')[0];
+  var url = 'https://cmp.inmobi.com'
+    .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+  var reg = /^(https?:)?\/\/([a-zA-Z0-9.-]+)?(\/.*)?$/;
+  if (!reg.test(url)) {
+    throw new Error('Invalid URL');
+  }
+  element.async = true;
+  element.type = 'text/javascript';
+  element.src = url;
+  firstScript.parentNode.insertBefore(element, firstScript);
+
+  function stub() {
+    var TCF_LOCATOR_NAME = '__tcfapiLocator';
+    var queue = [];
+    var cmpFrame;
+    function addFrame() {
+      var doc = window.document;
+      var iframe = doc.createElement('iframe');
+      iframe.style.cssText = 'display:none';
+      iframe.name = TCF_LOCATOR_NAME;
+      doc.body.appendChild(iframe);
+    }
+    function tcfAPIHandler() {
+      var args = arguments;
+      if (!args.length) return queue;
+      if (args[0] === 'setGdprApplies') {
+        if (args.length > 3 && args[2] === 2 && typeof args[3] === 'boolean') {
+          window.__tcfapi.gdprApplies = args[3];
+          queue.push(args);
+        } else {
+          queue.push(args);
+        }
+      } else if (args[0] === 'ping') {
+        var retr = { gdprApplies: window.__tcfapi.gdprApplies, cmpLoaded: false, cmpStatus: 'stub', apiVersion: '2.2', tcfPolicyVersion: 4 };
+        if (typeof args[2] === 'function') args[2](retr, true);
+      } else {
+        queue.push(args);
+      }
+    }
+    function postMessageEventHandler(event) {
+      var json = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      if (json.__tcfapiCall) {
+        window.__tcfapi(json.__tcfapiCall.command, json.__tcfapiCall.version, function(retValue, success) {
+          var returnMsg = { __tcfapiReturn: { returnValue: retValue, success: success, callId: json.__tcfapiCall.callId } };
+          event.source.postMessage(typeof event.data === 'string' ? JSON.stringify(returnMsg) : returnMsg, '*');
+        }, json.__tcfapiCall.parameter);
+      }
+    }
+    window.__tcfapi = tcfAPIHandler;
+    window.__tcfapi.gdprApplies = null;
+    if (!window.frames[TCF_LOCATOR_NAME]) addFrame();
+    window.addEventListener('message', postMessageEventHandler, false);
+  }
+  stub();
+
+  function uspStubFunction() {
+    var arg = arguments;
+    if (typeof window.__uspapi === 'function') {
+      window.__uspapi.apply(window, arg);
+    } else {
+      window.__uspapi = function() { (window.__uspapi.a = window.__uspapi.a || []).push(arguments); };
+    }
+  }
+  uspStubFunction();
+
+  var __tcfapi = window.__tcfapi;
+  window.__tcfapi('init', 2, function() {}, { tag_version: 'V3' });
+})();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
+<style>
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eaf7ff;background:#06152f}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:32px 18px 48px;background:radial-gradient(circle at 50% 10%,rgba(18,105,211,.22),transparent 42%),#06152f}.page{width:min(920px,100%);margin:0 auto}
+.card{width:min(420px,100%);margin:7vh auto 0;padding:28px;border:1px solid rgba(118,199,255,.25);border-radius:20px;background:rgba(5,20,48,.96);box-shadow:0 20px 70px rgba(0,0,0,.4)}.brand{font-weight:900;letter-spacing:.04em;font-size:22px}.brand span{color:#56b8ff}.eyebrow{margin:8px 0 24px;color:#8ea9bf;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+label{display:block;margin:0 0 7px;color:#bcd4e5;font-size:12px;font-weight:700}input{width:100%;padding:12px 13px;margin:0 0 16px;border:1px solid rgba(118,199,255,.25);border-radius:10px;background:#081c3c;color:#fff;outline:none}input:focus{border-color:#56b8ff}button{font:inherit}.primary{width:100%;padding:12px;border:0;border-radius:10px;background:#1269d3;color:#fff;font-weight:800;cursor:pointer}.primary:hover{filter:brightness(1.08)}#message{min-height:20px;margin:14px 0 0;color:#ffb9c0;font-size:12px}a{color:#8fcfff;font-size:12px;text-decoration:none}.back-link{display:block;margin-top:18px;text-align:center}.hidden{display:none!important}
+.admin-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 20px}.admin-header .brand{font-size:24px}.admin-subtitle{margin:5px 0 0;color:#8ea9bf;font-size:12px}.logout{border:1px solid rgba(118,199,255,.28);border-radius:10px;background:rgba(5,20,48,.9);color:#8fcfff;padding:9px 13px;font-size:12px;font-weight:800;cursor:pointer}.logout:hover{filter:brightness(1.12)}.admin-welcome{margin-bottom:18px;padding:16px;border:1px solid rgba(118,199,255,.18);border-radius:14px;background:rgba(255,255,255,.035)}.admin-welcome strong{display:block;font-size:14px}.admin-welcome span{display:block;margin-top:4px;color:#8ea9bf;font-size:11px}
+.klaro-status-panel{width:100%;padding:18px;border:1px solid rgba(118,199,255,.25);border-radius:18px;background:rgba(5,20,48,.97);color:#eaf7ff;box-shadow:0 18px 55px rgba(0,0,0,.38);backdrop-filter:blur(14px)}.klaro-status-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.klaro-status-head strong{font-size:15px}.klaro-status-refresh{border:0;background:transparent;color:#a9c9df;font-size:20px;cursor:pointer}.klaro-status-note{margin:5px 0 14px;color:#8ea9bf;font-size:11px;line-height:1.4}.klaro-status-list{display:flex;flex-direction:column;gap:7px}.klaro-status-item{display:grid;grid-template-columns:10px 1fr auto;gap:9px;align-items:center;padding:10px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06)}.klaro-status-item strong{display:block;font-size:12px}.klaro-status-item small{display:block;margin-top:2px;color:#8ea9bf;font-size:10px}.klaro-status-item b{font-size:9px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;letter-spacing:.04em;color:#9eb5c8;text-align:right}.status-dot{display:block;width:8px;height:8px;border-radius:50%;background:#73849a;box-shadow:0 0 7px transparent}.status-ok .status-dot{background:#53e6a0;box-shadow:0 0 8px rgba(83,230,160,.65)}.status-warn .status-dot{background:#ffd36b;box-shadow:0 0 8px rgba(255,211,107,.55)}.status-error .status-dot{background:#ff6f7d;box-shadow:0 0 8px rgba(255,111,125,.55)}.status-ok b{color:#6ee7b7}.status-warn b{color:#ffd36b}.status-error b{color:#ff8d99}.klaro-status-overall{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:11px}.klaro-status-overall.status-ok{color:#6ee7b7}.klaro-status-overall.status-warn{color:#ffd36b}.klaro-status-overall.status-error{color:#ff8d99}
+.admin-footer{margin-top:34px;padding:20px 0 0;border-top:1px solid rgba(118,199,255,.14);text-align:center;color:#8ea9bf}.admin-footer nav{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:10px}.admin-footer nav a{font-size:12px}.admin-copyright{font-size:11px;opacity:.55}.status-below-footer{margin-top:22px}.status-below-footer .status-label{margin:0 0 8px;color:#6f91aa;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+@media(max-width:700px){body{padding:22px 12px 36px}.card{margin-top:4vh;padding:24px}.admin-header{align-items:flex-start}.admin-header .brand{font-size:21px}.logout{padding:8px 10px}.klaro-status-panel{padding:14px}.klaro-status-item{grid-template-columns:10px 1fr}.klaro-status-item b{grid-column:2;text-align:left;margin-top:-3px}}
+
+.admin-analytics{margin-top:28px}.admin-analytics-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:14px}.admin-analytics-head h2{margin:2px 0 5px;font-size:19px}.admin-analytics-note{margin:0;color:#8ea9bf;font-size:11px;line-height:1.5;max-width:640px}.admin-analytics-actions{display:flex;gap:8px;align-items:center}.admin-analytics-actions select,.admin-analytics-actions button{border:1px solid rgba(118,199,255,.25);border-radius:9px;background:#081c3c;color:#dff3ff;padding:9px 11px;font-size:11px;font-weight:700}.admin-analytics-actions button{cursor:pointer}.analytics-message{margin:0 0 14px;padding:12px;border:1px solid rgba(118,199,255,.16);border-radius:10px;background:rgba(255,255,255,.035);color:#8ea9bf;font-size:11px}.analytics-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.analytics-kpis article{padding:14px;border:1px solid rgba(118,199,255,.16);border-radius:13px;background:rgba(5,20,48,.82)}.analytics-kpis span{display:block;color:#8ea9bf;font-size:10px;text-transform:uppercase;letter-spacing:.08em}.analytics-kpis strong{display:block;margin-top:6px;font-size:22px}.analytics-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.analytics-box{padding:15px;border:1px solid rgba(118,199,255,.16);border-radius:14px;background:rgba(5,20,48,.82)}.analytics-box h3{margin:0 0 12px;font-size:12px}.analytics-list{display:flex;flex-direction:column;gap:7px}.analytics-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 9px;border-radius:8px;background:rgba(255,255,255,.035)}.analytics-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c6d9e7;font-size:10px}.analytics-row b{font-size:10px;color:#6ee7b7}.analytics-daily{margin-top:12px}.analytics-daily-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.analytics-day{padding:10px;border-radius:9px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05)}.analytics-day strong{display:block;font-size:11px}.analytics-day small{display:block;margin-top:4px;color:#8ea9bf;font-size:9px;line-height:1.5}
+@media(max-width:700px){.admin-analytics-head{align-items:flex-start;flex-direction:column}.admin-analytics-actions{width:100%}.admin-analytics-actions select,.admin-analytics-actions button{flex:1}.analytics-grid,.analytics-columns{grid-template-columns:1fr}.analytics-kpis article{padding:12px}}
+
+</style>
+</head>
+<body>
+<div class="page">
+<section id="loginView" class="card">
+<div class="brand">klaro<span>KI</span></div><div class="eyebrow">Administrativer Zugang</div>
+<form id="loginForm"><label for="email">E-Mail</label><input id="email" name="email" type="email" autocomplete="username" required><label for="password">Passwort</label><input id="password" name="password" type="password" autocomplete="current-password" required><button class="primary" type="submit">Als Admin einloggen</button><p id="message" role="alert"></p></form>
+<a class="back-link" href="index.html">← Zurück zu Klaro KI</a>
+</section>
+<main id="adminView" class="hidden">
+<header class="admin-header"><div><div class="brand">klaro<span>KI</span></div><p class="admin-subtitle">Administrationsbereich</p></div><button id="adminLogout" class="logout" type="button">Abmelden</button></header>
+<div class="admin-welcome"><strong>Admin-Zugang aktiv</strong><span>Nur diese eingeloggte Admin-Sitzung kann den Systemstatus sehen.</span></div>
+</main>
+<footer class="admin-footer"><nav aria-label="Admin-Fußzeile"><a href="index.html">Klaro KI</a><a href="impressum.html">Impressum</a><a href="mailto:dirkpelikan@freenet.de?subject=Klaro%20KI%20Admin">Kontakt</a><a href="#" id="adminPrivacyButton">Datenschutz</a></nav><div class="admin-copyright">© 2026 Klaro KI · Administrationsbereich</div></footer>
+<section id="adminStatus" class="status-below-footer hidden" aria-labelledby="adminStatusTitle">
+<p class="status-label">Nur für Admins</p><div class="klaro-status-panel"><div class="klaro-status-head"><strong id="adminStatusTitle">Klaro KI Systemstatus</strong><button id="klaroStatusRefresh" class="klaro-status-refresh" type="button" aria-label="Status aktualisieren">↻</button></div>
+<p class="klaro-status-note">Live-Prüfung der verfügbaren Dienste.</p><div class="klaro-status-list">
+<div class="klaro-status-item" data-service="klaro"><span class="status-dot"></span><div><strong>Klaro KI</strong><small>Oberfläche &amp; Antwortlogik</small></div><b>Prüfung …</b></div>
+<div class="klaro-status-item" data-service="database"><span class="status-dot"></span><div><strong>Externe Datenbank</strong><small>Supabase / Wissensbasis</small></div><b>Prüfung …</b></div>
+<div class="klaro-status-item" data-service="websearch"><span class="status-dot"></span><div><strong>Webrecherche</strong><small>Vercel /api/web-search</small></div><b>Prüfung …</b></div>
+<div class="klaro-status-item" data-service="stripe"><span class="status-dot"></span><div><strong>Stripe</strong><small>Premium / Zahlungsdienst</small></div><b>Prüfung …</b></div>
+<div class="klaro-status-item" data-service="moneytizer"><span class="status-dot"></span><div><strong>The Moneytizer</strong><small>Werbung / Monetarisierung</small></div><b>Prüfung …</b></div>
+<div class="klaro-status-item" data-service="cmp"><span class="status-dot"></span><div><strong>CMP</strong><small>Consent / TCF 2.3</small></div><b>Prüfung …</b></div></div>
+<div class="klaro-status-overall" id="klaroStatusOverall"><span class="status-dot"></span><strong>Gesamtsystem: Prüfung …</strong></div></div>
+</section>
+
+<section id="adminAnalytics" class="admin-analytics hidden" aria-labelledby="adminAnalyticsTitle">
+  <div class="admin-analytics-head">
+    <div>
+      <p class="status-label">Nur für Admins</p>
+      <h2 id="adminAnalyticsTitle">Besucher &amp; Nutzung</h2>
+      <p class="admin-analytics-note">Anonyme Nutzungsstatistik für den gewählten Zeitraum. Erfasst werden nur Messdaten nach entsprechender CMP-Einwilligung.</p>
+    </div>
+    <div class="admin-analytics-actions"><select id="analyticsPeriod" aria-label="Zeitraum"><option value="7">7 Tage</option><option value="30" selected>30 Tage</option><option value="90">90 Tage</option><option value="365">365 Tage</option></select><button id="analyticsRefresh" type="button">↻ Aktualisieren</button></div>
+  </div>
+  <div id="analyticsMessage" class="analytics-message">Statistik wird geladen …</div>
+  <div id="analyticsContent" class="hidden">
+    <div class="analytics-grid analytics-kpis">
+      <article><span>Besucher</span><strong id="statVisitors">–</strong></article>
+      <article><span>Sitzungen</span><strong id="statSessions">–</strong></article>
+      <article><span>Seitenaufrufe</span><strong id="statPageViews">–</strong></article>
+      <article><span>KI-Interaktionen</span><strong id="statAi">–</strong></article>
+      <article><span>KI erfolgreich</span><strong id="statAiSuccess">–</strong></article>
+      <article><span>KI-Fehler</span><strong id="statAiErrors">–</strong></article>
+      <article><span>Ø Besuchsdauer</span><strong id="statAvgDuration">–</strong></article>
+      <article><span>Gesamte Besuchszeit</span><strong id="statTotalDuration">–</strong></article>
+      <article><span>Ø KI-Dauer</span><strong id="statAvgAi">–</strong></article>
+    </div>
+    <div class="analytics-columns">
+      <section class="analytics-box"><h3>Endgeräte</h3><div id="analyticsDevices" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Browser</h3><div id="analyticsBrowsers" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Bildschirmauflösung</h3><div id="analyticsScreens" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Betriebssysteme</h3><div id="analyticsOs" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Sprachen</h3><div id="analyticsLanguages" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Länder</h3><div id="analyticsCountries" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Referrer / Zugriffsquellen</h3><div id="analyticsReferrers" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>Aufgerufene Seiten</h3><div id="analyticsPages" class="analytics-list"></div></section>
+      <section class="analytics-box"><h3>UI-Interaktionen</h3><div id="analyticsInteractions" class="analytics-list"></div></section>
+    </div>
+    <section class="analytics-box analytics-daily"><h3>Tagesverlauf</h3><div id="analyticsDaily" class="analytics-daily-list"></div></section>
+  </div>
+</section>
+
+</div>
+<script>
+const loginView=document.getElementById('loginView'),adminView=document.getElementById('adminView'),adminStatus=document.getElementById('adminStatus'),message=document.getElementById('message');const statusItems=[...document.querySelectorAll('.klaro-status-item')];
+const setStatus=(key,state,label)=>{const el=document.querySelector(`[data-service="${key}"]`);if(!el)return;el.classList.remove('status-ok','status-warn','status-error');el.classList.add('status-'+state);const b=el.querySelector('b');if(b)b.textContent=label;};
+async function waitForCmp(timeout=5000){if(typeof window.__tcfapi==='function')return true;const start=Date.now();while(Date.now()-start<timeout){await new Promise(r=>setTimeout(r,200));if(typeof window.__tcfapi==='function')return true;}return false;}
+async function checkStatus(){statusItems.forEach(el=>{el.classList.remove('status-ok','status-warn','status-error');const b=el.querySelector('b');if(b)b.textContent='Prüfung …';});setStatus('klaro','ok','AKTIV');try{const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{headers:{apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'}});setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');}catch(e){setStatus('database','error','FEHLER');}try{const r=await fetch('/api/web-search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:''})});setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');}catch(e){setStatus('websearch','error','FEHLER');}try{const r=await fetch('/api/service-status');if(r.ok){const d=await r.json();setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');}else throw new Error();}catch(e){setStatus('stripe','warn','SERVER-CHECK FEHLT');setStatus('moneytizer','warn','SERVER-CHECK FEHLT');}const cmpReady=await waitForCmp();setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');const states=statusItems.map(x=>x.classList.contains('status-error')?'error':x.classList.contains('status-warn')?'warn':'ok');const hasError=states.includes('error'),hasWarn=states.includes('warn');const overall=document.getElementById('klaroStatusOverall');overall.classList.remove('status-ok','status-warn','status-error');overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;}
+
+const adminAnalytics=document.getElementById('adminAnalytics');
+const analyticsContent=document.getElementById('analyticsContent');
+const analyticsMessage=document.getElementById('analyticsMessage');
+const analyticsPeriod=document.getElementById('analyticsPeriod');
+const fmtNumber=n=>new Intl.NumberFormat('de-DE').format(Number(n||0));
+const fmtSeconds=s=>{const n=Math.round(Number(s||0));if(n<60)return `${n} Sek.`;const m=Math.floor(n/60),sec=n%60;return `${m} Min. ${sec} Sek.`;};
+function renderAnalyticsList(id,items){const el=document.getElementById(id);if(!el)return;el.innerHTML=(items||[]).slice(0,10).map(x=>`<div class="analytics-row"><span title="${String(x.name||'').replace(/"/g,'&quot;')}">${String(x.name||'Unbekannt')}</span><b>${fmtNumber(x.count)}</b></div>`).join('')||'<div class="analytics-row"><span>Keine Daten</span><b>0</b></div>';}
+function renderAnalytics(data){const s=data.summary||{};document.getElementById('statVisitors').textContent=fmtNumber(s.visitors);document.getElementById('statSessions').textContent=fmtNumber(s.sessions);document.getElementById('statPageViews').textContent=fmtNumber(s.page_views);document.getElementById('statAi').textContent=fmtNumber(s.ai_interactions);document.getElementById('statAiSuccess').textContent=fmtNumber(s.ai_successes);document.getElementById('statAiErrors').textContent=fmtNumber(s.ai_errors);document.getElementById('statAvgDuration').textContent=fmtSeconds(s.avg_session_seconds);document.getElementById('statTotalDuration').textContent=`${Number(s.total_session_minutes||0).toLocaleString('de-DE',{maximumFractionDigits:1})} Min.`;document.getElementById('statAvgAi').textContent=fmtSeconds(s.avg_ai_seconds);renderAnalyticsList('analyticsDevices',data.devices);renderAnalyticsList('analyticsBrowsers',data.browsers);renderAnalyticsList('analyticsScreens',data.screens);renderAnalyticsList('analyticsOs',data.operating_systems);renderAnalyticsList('analyticsLanguages',data.languages);renderAnalyticsList('analyticsCountries',data.countries);renderAnalyticsList('analyticsReferrers',data.referrers);renderAnalyticsList('analyticsPages',data.pages);renderAnalyticsList('analyticsInteractions',data.interaction_types);const daily=document.getElementById('analyticsDaily');daily.innerHTML=(data.daily||[]).slice(-31).map(x=>`<div class="analytics-day"><strong>${x.date}</strong><small>Besucher: ${fmtNumber(x.visitors)}<br>KI: ${fmtNumber(x.ai_interactions)}<br>Aufrufe: ${fmtNumber(x.page_views)}</small></div>`).join('')||'<div class="analytics-day"><strong>Keine Daten</strong></div>';}
+async function loadAnalytics(){analyticsMessage.textContent='Statistik wird geladen …';analyticsMessage.classList.remove('hidden');analyticsContent.classList.add('hidden');try{const r=await fetch(`/api/analytics-stats?days=${encodeURIComponent(analyticsPeriod.value)}`,{credentials:'same-origin',cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.error||'Analytics konnten nicht geladen werden.');renderAnalytics(d);analyticsMessage.classList.add('hidden');analyticsContent.classList.remove('hidden');}catch(e){analyticsMessage.textContent=e.message;}}
+function showAdmin(){loginView.classList.add('hidden');adminView.classList.remove('hidden');adminStatus.classList.remove('hidden');adminAnalytics.classList.remove('hidden');checkStatus();loadAnalytics();}
+document.getElementById('analyticsRefresh').addEventListener('click',loadAnalytics);analyticsPeriod.addEventListener('change',loadAnalytics);
+
+document.getElementById('adminPrivacyButton').addEventListener('click',async e=>{e.preventDefault();const ready=await waitForCmp();if(ready){window.__tcfapi('displayConsentUi',2,()=>{});}else{alert('Die Datenschutzeinstellungen werden noch geladen. Bitte kurz erneut versuchen.');}});
+async function checkSession(){try{const r=await fetch('/api/admin-session',{credentials:'same-origin',cache:'no-store'});const d=await r.json();if(d.admin)showAdmin();}catch(_){} }
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();message.textContent='';const body={email:document.getElementById('email').value,password:document.getElementById('password').value};try{const r=await fetch('/api/admin-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Login fehlgeschlagen.');showAdmin();}catch(err){message.textContent=err.message;}});
+document.getElementById('adminLogout').addEventListener('click',async()=>{try{await fetch('/api/admin-logout',{method:'POST',credentials:'same-origin'});}finally{location.href='/';}});document.getElementById('klaroStatusRefresh').addEventListener('click',checkStatus);checkSession();
+</script>
+</body>
+</html>
