@@ -197,6 +197,8 @@ body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparen
       <div class="klaro-status-item status-card" data-service="stripe"><span class="status-dot"></span><div><strong>Stripe</strong><small>Premium / Zahlungsdienst</small></div><b>Prüfung …</b></div>
       <div class="klaro-status-item status-card" data-service="moneytizer"><span class="status-dot"></span><div><strong>The Moneytizer</strong><small>Werbung / Monetarisierung</small></div><b>Prüfung …</b></div>
       <div class="klaro-status-item status-card" data-service="cmp"><span class="status-dot"></span><div><strong>CMP</strong><small>Consent / TCF 2.3</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="knowledge-read"><span class="status-dot"></span><div><strong>Wissensbasis READ</strong><small>Lesefunktion / knowledge</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="knowledge-write"><span class="status-dot"></span><div><strong>Wissensbasis WRITE</strong><small>Schreibfunktion / knowledge</small></div><b>Prüfung …</b></div>
     </div>
     <div class="system-overall" id="klaroStatusOverall"><span class="status-dot"></span><strong>Gesamtsystem: Prüfung …</strong></div>
   </section>
@@ -283,7 +285,73 @@ body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparen
 const loginView=document.getElementById('loginView'),adminView=document.getElementById('adminView'),adminStatus=document.getElementById('adminStatus'),message=document.getElementById('message');const statusItems=[...document.querySelectorAll('.klaro-status-item')];
 const setStatus=(key,state,label)=>{const el=document.querySelector(`[data-service="${key}"]`);if(!el)return;el.classList.remove('status-ok','status-warn','status-error');el.classList.add('status-'+state);const b=el.querySelector('b');if(b)b.textContent=label;};
 async function waitForCmp(timeout=5000){if(typeof window.__tcfapi==='function')return true;const start=Date.now();while(Date.now()-start<timeout){await new Promise(r=>setTimeout(r,200));if(typeof window.__tcfapi==='function')return true;}return false;}
-async function checkStatus(){statusItems.forEach(el=>{el.classList.remove('status-ok','status-warn','status-error');const b=el.querySelector('b');if(b)b.textContent='Prüfung …';});setStatus('klaro','ok','AKTIV');try{const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{headers:{apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'}});setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');}catch(e){setStatus('database','error','FEHLER');}try{const r=await fetch('/api/web-search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:''})});setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');}catch(e){setStatus('websearch','error','FEHLER');}try{const r=await fetch('/api/service-status');if(r.ok){const d=await r.json();setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');}else throw new Error();}catch(e){setStatus('stripe','warn','SERVER-CHECK FEHLT');setStatus('moneytizer','warn','SERVER-CHECK FEHLT');}const cmpReady=await waitForCmp();setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');const states=statusItems.map(x=>x.classList.contains('status-error')?'error':x.classList.contains('status-warn')?'warn':'ok');const hasError=states.includes('error'),hasWarn=states.includes('warn');const overall=document.getElementById('klaroStatusOverall');overall.classList.remove('status-ok','status-warn','status-error');overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;}
+async function checkStatus(){
+  statusItems.forEach(el=>{
+    el.classList.remove('status-ok','status-warn','status-error');
+    const b=el.querySelector('b');
+    if(b)b.textContent='Prüfung …';
+  });
+
+  setStatus('klaro','ok','AKTIV');
+
+  try{
+    const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{
+      headers:{
+        apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',
+        Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'
+      }
+    });
+    setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');
+  }catch(e){
+    setStatus('database','error','FEHLER');
+  }
+
+  try{
+    const r=await fetch('/api/web-search',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({query:''})
+    });
+    setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');
+  }catch(e){
+    setStatus('websearch','error','FEHLER');
+  }
+
+  try{
+    const r=await fetch('/api/service-status');
+    if(r.ok){
+      const d=await r.json();
+      setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');
+      setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');
+    }else throw new Error();
+  }catch(e){
+    setStatus('stripe','warn','SERVER-CHECK FEHLT');
+    setStatus('moneytizer','warn','SERVER-CHECK FEHLT');
+  }
+
+  try{
+    const r=await fetch('/api/knowledge-status',{credentials:'same-origin',cache:'no-store'});
+    const d=await r.json();
+    setStatus('knowledge-read',d.read?.ok?'ok':'error',d.read?.label||'FEHLER');
+    setStatus('knowledge-write',d.write?.ok?'ok':'error',d.write?.label||'FEHLER');
+  }catch(e){
+    setStatus('knowledge-read','error','FEHLER');
+    setStatus('knowledge-write','error','FEHLER');
+  }
+
+  const cmpReady=await waitForCmp();
+  setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');
+
+  const states=statusItems.map(x=>
+    x.classList.contains('status-error')?'error':
+    x.classList.contains('status-warn')?'warn':'ok'
+  );
+  const hasError=states.includes('error'),hasWarn=states.includes('warn');
+  const overall=document.getElementById('klaroStatusOverall');
+  overall.classList.remove('status-ok','status-warn','status-error');
+  overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));
+  overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;
+}
 
 const adminAnalytics=document.getElementById('adminAnalytics');
 const analyticsContent=document.getElementById('analyticsContent');
