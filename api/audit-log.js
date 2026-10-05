@@ -1,53 +1,108 @@
 const { isAdmin } = require('./_admin-auth');
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://iiogaaolzzpveefthdxj.supabase.co';
+const SUPABASE_URL =
+  process.env.SUPABASE_URL || 'https://iiogaaolzzpveefthdxj.supabase.co';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-module.exports = async (req, res) => {
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method Not Allowed' });
-  if (!isAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
-  if (!SUPABASE_SERVICE_ROLE_KEY) return res.status(503).json({ error: 'Audit server is not configured.' });
+export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  if (!isAdmin(req)) {
+    return res.status(401).json({ error: 'Nicht autorisiert.' });
+  }
+
+  if (!SUPABASE_SERVICE_ROLE_KEY) {
+    return res.status(503).json({
+      error: 'Supabase server access is not configured.'
+    });
+  }
+
+  const rawLimit = Number.parseInt(req.query?.limit ?? '100', 10);
+  const limit = Math.min(
+    Math.max(Number.isFinite(rawLimit) ? rawLimit : 100, 1),
+    200
+  );
+
+  const status = String(req.query?.status ?? '').trim().toLowerCase();
+
+  if (status && !['success', 'error'].includes(status)) {
+    return res.status(400).json({
+      error: 'Ungültiger status. Erlaubt sind success oder error.'
+    });
+  }
+
+  const params = new URLSearchParams();
+  params.set(
+    'select',
+    [
+      'id',
+      'created_at',
+      'action',
+      'source_type',
+      'source_name',
+      'source_table',
+      'record_id',
+      'request_id',
+      'query_text',
+      'written_data',
+      'result_data',
+      'status',
+      'error_message',
+      'metadata'
+    ].join(',')
+  );
+  params.set('order', 'created_at.desc');
+  params.set('limit', String(limit));
+
+  if (status) {
+    params.set('status', `eq.${status}`);
+  }
 
   try {
-    const requestedLimit = Number(req.query?.limit || 100);
-    const limit = Math.min(Math.max(Number.isFinite(requestedLimit) ? requestedLimit : 100, 1), 200);
-    const status = String(req.query?.status || '').trim().toLowerCase();
+    const response = await fetch(
+      `${SUPABASE_URL.replace(/\/+$/, '')}/rest/v1/klaro_activity_log?${params.toString()}`,
+      {
+        method: 'GET',
+        headers: {
+          apikey: SUPABASE_SERVICE_ROLE_KEY,
+          Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          Accept: 'application/json'
+        }
+      }
+    );
 
-    const params = new URLSearchParams({
-      select: 'id,created_at,action,source_type,source_name,source_table,record_id,request_id,query_text,written_data,result_data,status,error_message,metadata',
-      order: 'created_at.desc',
-      limit: String(limit)
-    });
+    const text = await response.text();
+    let data = null;
 
-    if (status === 'success' || status === 'error') {
-      params.set('status', `eq.${status}`);
+    try {
+      data = text ? JSON.parse(text) : [];
+    } catch (_) {
+      data = text || [];
     }
 
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/klaro_activity_log?${params.toString()}`, {
-      method: 'GET',
-      headers: {
-        apikey: SUPABASE_SERVICE_ROLE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-        Accept: 'application/json'
-      }
-    });
+    if (!response.ok) {
+      const message =
+        typeof data === 'string'
+          ? data
+          : data?.message || data?.error || `HTTP ${response.status}`;
 
-    const text = await r.text();
-    let data = null;
-    try { data = text ? JSON.parse(text) : null; } catch { data = null; }
-
-    if (!r.ok) {
       return res.status(502).json({
-        error: data?.message || data?.hint || text || `Audit query failed (HTTP ${r.status}).`
+        error: `Audit log read failed: ${String(message).slice(0, 500)}`
       });
     }
 
+    const rows = Array.isArray(data) ? data : [];
+
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
-      rows: Array.isArray(data) ? data : [],
-      count: Array.isArray(data) ? data.length : 0
+      rows,
+      count: rows.length
     });
   } catch (error) {
-    return res.status(500).json({ error: error?.message || String(error) });
+    return res.status(500).json({
+      error: error?.message || String(error)
+    });
   }
-};
+}
