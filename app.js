@@ -345,3 +345,52 @@
   };
   waitForCmp();
 })();
+
+/* Klaro KI Systemstatus */
+(function(){
+  const toolbar=document.getElementById('klaroStatusToolbar');
+  if(!toolbar) return;
+  const toggle=document.getElementById('klaroStatusToggle');
+  const refresh=document.getElementById('klaroStatusRefresh');
+  const overall=document.getElementById('klaroStatusOverall');
+  const items=[...toolbar.querySelectorAll('.klaro-status-item')];
+  const setStatus=(key,state,label)=>{
+    const el=toolbar.querySelector(`[data-service="${key}"]`); if(!el) return;
+    el.classList.remove('status-ok','status-warn','status-error'); el.classList.add('status-'+state);
+    const b=el.querySelector('b'); if(b) b.textContent=label;
+  };
+  async function check(){
+    items.forEach(el=>{el.classList.remove('status-ok','status-warn','status-error');el.querySelector('b').textContent='Prüfung …';});
+    setStatus('klaro','ok','AKTIV');
+    try{
+      const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{headers:{apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'}});
+      setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');
+    }catch(e){setStatus('database','error','FEHLER');}
+    try{
+      const r=await fetch('/api/web-search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:''})});
+      setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');
+    }catch(e){setStatus('websearch','error','FEHLER');}
+    try{
+      const r=await fetch('/api/service-status');
+      if(r.ok){const d=await r.json(); setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT'); setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');}
+      else throw new Error();
+    }catch(e){setStatus('stripe','warn','SERVER-CHECK FEHLT');setStatus('moneytizer','warn','SERVER-CHECK FEHLT');}
+    const cmpReady=typeof window.__tcfapi==='function';
+    setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');
+    const states=items.map(x=>x.classList.contains('status-error')?'error':x.classList.contains('status-warn')?'warn':'ok');
+    const hasError=states.includes('error'), hasWarn=states.includes('warn');
+    overall.classList.remove('status-ok','status-warn','status-error');
+    overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));
+    overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;
+  }
+  toggle.addEventListener('click',()=>{const open=toolbar.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));if(open) check();});
+  const openPrivacy=()=>{if(typeof window.__tcfapi==='function'){window.__tcfapi('displayConsentUi',2,()=>{});}else{alert('Die Datenschutzeinstellungen werden geladen.');}};
+  const privacyButton=document.getElementById('privacyButton');
+  const cmpPrivacyFab=document.getElementById('cmpPrivacyFab');
+  if(privacyButton) privacyButton.addEventListener('click',openPrivacy);
+  if(cmpPrivacyFab) cmpPrivacyFab.addEventListener('click',openPrivacy);
+
+  refresh.addEventListener('click',check);
+  check();
+})();
+
