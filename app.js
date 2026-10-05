@@ -48,43 +48,19 @@
   }
 
   async function webSearch(query) {
-    // Kostenfreie Recherche-Orchestrierung: mehrere Suchrichtungen parallel, danach serverseitig dedupliziert und priorisiert.
-    const r = await fetch(`/api/research-search`, {
+    // Supabase Edge Function: web-search. Die Funktion hält die externe Recherche serverseitig.
+    const r = await fetch(`/api/web-search`, {
       method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({query, limit:12})
+      headers:{
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify({query, limit:8})
     });
     const text=await r.text();
     let data=null; try{data=text?JSON.parse(text):null}catch{data={raw:text}}
     if(!r.ok) throw new Error(`Websuche HTTP ${r.status}: ${data?.error || data?.message || text || r.statusText}`);
     return Array.isArray(data) ? data : (data.results || []);
   }
-
-  function tokenize(text){
-    return [...new Set(cleanWebText(text).toLowerCase().replace(/[^a-z0-9äöüß\- ]/gi,' ').split(/\s+/).filter(t=>t.length>=4))];
-  }
-
-  function relevanceScore(query, item){
-    const terms=tokenize(query);
-    const title=cleanWebText(item.title||'').toLowerCase();
-    const body=cleanWebText(item.summary||'').toLowerCase();
-    let score=0;
-    for(const term of terms){
-      if(title.includes(term)) score+=3;
-      else if(body.includes(term)) score+=1;
-    }
-    return score;
-  }
-
-  function uniqueSources(items){
-    const seen=new Set();
-    return items.filter(item=>{
-      const key=(item.url||item.title||'').toLowerCase().replace(/[^a-z0-9äöüß]/gi,'');
-      if(!key||seen.has(key)) return false;
-      seen.add(key); return true;
-    });
-  }
-
 
   function addMessage(text, role, extra="") {
     const row=document.createElement("div");
@@ -140,48 +116,50 @@
     const knowledgeText = knowledge.slice(0, 5)
       .map(r => cleanWebText(r.answer || ""))
       .filter(Boolean);
-    const webItems = uniqueSources(web.slice().sort((a,b)=>relevanceScore(cleanQuery,b)-relevanceScore(cleanQuery,a))).slice(0,10).map(r => ({
+
+    const webItems = web.slice(0, 8).map(r => ({
       title: cleanWebText(r.title || ""),
       summary: cleanWebText(r.summary || ""),
       source: cleanWebText(r.source || ""),
-      date: cleanWebText(r.date || ""),
-      url: cleanWebText(r.url || "")
+      date: cleanWebText(r.date || "")
     })).filter(r => r.title || r.summary);
 
     if (!knowledgeText.length && !webItems.length) return "";
 
-    const terms=tokenize(cleanQuery);
-    const combined=webItems.map(r=>`${r.title} ${r.summary}`.toLowerCase()).join(' ');
-    const matchedTerms=terms.filter(t=>combined.includes(t));
-    const dateValues=webItems.map(r=>Date.parse(r.date)).filter(Number.isFinite).sort((a,b)=>b-a);
-    const newest=dateValues.length?new Date(dateValues[0]).toLocaleDateString('de-DE'):null;
-    const sources=buildSourceList(webItems);
-
+    // Politische Zukunftsfragen brauchen eine andere Antwortlogik als reine Faktenfragen:
+    // Klaro KI beschreibt die Quellenlage und die entscheidenden Voraussetzungen, statt selbst
+    // einen Wahlausgang, Amtsverlust oder eine Wahrscheinlichkeit vorherzusagen.
     if (isForecastQuestion(cleanQuery)) {
-      const evidence = webItems.slice(0, 5).map(r => r.summary && r.title && !r.summary.startsWith(r.title) ? `${r.title}: ${r.summary}` : (r.summary || r.title)).join(" ");
-      let reply = `**Kurz gesagt:** Die Frage betrifft eine zukünftige Entwicklung. Die aktuelle Recherche kann den belegten Stand und relevante Voraussetzungen zeigen, aber keinen sicheren Ausgang vorhersagen.`;
+      const evidence = webItems.slice(0, 4).map(r => {
+        if (r.summary && r.title && !r.summary.startsWith(r.title)) return `${r.title}: ${r.summary}`;
+        return r.summary || r.title;
+      }).join(" ");
+
+      const sourceList = buildSourceList(webItems);
+      let reply = `**Kurz gesagt:** Ob sich „${cleanQuery}“ tatsächlich so entwickelt, lässt sich aus aktueller Berichterstattung nicht verlässlich vorhersagen. Ich kann die derzeit belegten Entwicklungen, Umfragen, Analysen und die dafür entscheidenden Voraussetzungen einordnen, aber daraus keine sichere Zukunftsprognose ableiten.`;
+
       if (evidence) reply += `\n\n**Was die aktuelle Recherche zeigt:** ${evidence}`;
-      if (knowledgeText.length) reply += `\n\n**Wissensbasis:** ${knowledgeText.slice(0, 3).join(" ")}`;
-      reply += `\n\n**Einordnung:** Die Recherche wurde aus mehreren Suchrichtungen zusammengeführt und doppelte Treffer entfernt. ${newest ? `Der jüngste gefundene Veröffentlichungszeitpunkt ist ${newest}.` : ''}`;
-      reply += `\n\n**Fazit:** Aus den vorliegenden Quellen lässt sich kein sicherer zukünftiger Ausgang ableiten.`;
-      if (sources) reply += `\n\n**Ausgewertete Quellen:**\n${sources}`;
+      if (knowledgeText.length) reply += `\n\n**Aus der Wissensbasis:** ${knowledgeText.slice(0, 3).join(" ")}`;
+      reply += `\n\n**Fazit:** Die Quellen liefern Hinweise und unterschiedliche Einschätzungen, aber keinen belastbaren Beleg dafür, dass das abgefragte Ereignis eintreten wird. Für eine belastbare Bewertung müssen neue Entwicklungen und verlässliche Daten fortlaufend geprüft werden.`;
+      if (sourceList) reply += `\n\n**Ausgewertete Quellen:**\n${sourceList}`;
       return reply;
     }
 
-    const findings=[];
-    for(const item of webItems.slice(0,6)){
-      const text=item.summary && item.title && !item.summary.startsWith(item.title) ? `${item.title}: ${item.summary}` : (item.summary || item.title);
-      if(text) findings.push(text);
+    const sections = [];
+    if (knowledgeText.length) {
+      sections.push(`Aus der gespeicherten Wissensbasis: ${knowledgeText.join(" ")}`);
     }
-
-    const sections=[];
-    sections.push(`**Recherche-Ergebnis:** Zu „${cleanQuery}“ wurden ${webItems.length} relevante Veröffentlichungen zusammengeführt. ${matchedTerms.length ? `Die Suchtreffer decken ${matchedTerms.length} zentrale Begriffe der Frage ab.` : ''}`);
-    if(findings.length) sections.push(`**Wesentliche Befunde:** ${findings.join(" ")}`);
-    if(knowledgeText.length) sections.push(`**Ergänzung aus der Wissensbasis:** ${knowledgeText.slice(0,3).join(" ")}`);
-    if(sources) sections.push(`**Quellen:**\n${sources}`);
-    return sections.join("\n\n");
+    if (webItems.length) {
+      const webParts = webItems.map(r => {
+        if (r.summary && r.title && !r.summary.startsWith(r.title)) return `${r.title}: ${r.summary}`;
+        return r.summary || r.title;
+      });
+      sections.push(`Für die aktuelle Webrecherche habe ich ${webParts.length} relevante Veröffentlichungen ausgewertet. ${webParts.join(" ")}`);
+      const sourceList = buildSourceList(webItems);
+      if (sourceList) sections.push(`Quellen:\n${sourceList}`);
+    }
+    return `Zur Frage „${cleanQuery}“:\n\n${sections.join("\n\n")}`;
   }
-
 
   async function ask(query) {
     researchStatus.textContent="RECHERCHE LÄUFT …";
@@ -345,52 +323,3 @@
   };
   waitForCmp();
 })();
-
-/* Klaro KI Systemstatus */
-(function(){
-  const toolbar=document.getElementById('klaroStatusToolbar');
-  if(!toolbar) return;
-  const toggle=document.getElementById('klaroStatusToggle');
-  const refresh=document.getElementById('klaroStatusRefresh');
-  const overall=document.getElementById('klaroStatusOverall');
-  const items=[...toolbar.querySelectorAll('.klaro-status-item')];
-  const setStatus=(key,state,label)=>{
-    const el=toolbar.querySelector(`[data-service="${key}"]`); if(!el) return;
-    el.classList.remove('status-ok','status-warn','status-error'); el.classList.add('status-'+state);
-    const b=el.querySelector('b'); if(b) b.textContent=label;
-  };
-  async function check(){
-    items.forEach(el=>{el.classList.remove('status-ok','status-warn','status-error');el.querySelector('b').textContent='Prüfung …';});
-    setStatus('klaro','ok','AKTIV');
-    try{
-      const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{headers:{apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'}});
-      setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');
-    }catch(e){setStatus('database','error','FEHLER');}
-    try{
-      const r=await fetch('/api/web-search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:''})});
-      setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');
-    }catch(e){setStatus('websearch','error','FEHLER');}
-    try{
-      const r=await fetch('/api/service-status');
-      if(r.ok){const d=await r.json(); setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT'); setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');}
-      else throw new Error();
-    }catch(e){setStatus('stripe','warn','SERVER-CHECK FEHLT');setStatus('moneytizer','warn','SERVER-CHECK FEHLT');}
-    const cmpReady=typeof window.__tcfapi==='function';
-    setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');
-    const states=items.map(x=>x.classList.contains('status-error')?'error':x.classList.contains('status-warn')?'warn':'ok');
-    const hasError=states.includes('error'), hasWarn=states.includes('warn');
-    overall.classList.remove('status-ok','status-warn','status-error');
-    overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));
-    overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;
-  }
-  toggle.addEventListener('click',()=>{const open=toolbar.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));if(open) check();});
-  const openPrivacy=()=>{if(typeof window.__tcfapi==='function'){window.__tcfapi('displayConsentUi',2,()=>{});}else{alert('Die Datenschutzeinstellungen werden geladen.');}};
-  const privacyButton=document.getElementById('privacyButton');
-  const cmpPrivacyFab=document.getElementById('cmpPrivacyFab');
-  if(privacyButton) privacyButton.addEventListener('click',openPrivacy);
-  if(cmpPrivacyFab) cmpPrivacyFab.addEventListener('click',openPrivacy);
-
-  refresh.addEventListener('click',check);
-  check();
-})();
-
