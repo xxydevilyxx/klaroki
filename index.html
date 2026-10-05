@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta name="description" content="Klaro KI ist eine reine politische KI für sachliche Einordnung, Möglichkeiten und transparente Wahrscheinlichkeitseinschätzungen.">
+<meta name="description" content="Klaro KI ist eine deutschsprachige KI-Plattform für verständliche Antworten, Recherche, Quellenvergleich und politische Einordnung.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Klaro KI – Politische Fragen verständlich einordnen">
-<meta name="twitter:description" content="Klaro KI ist eine reine politische KI für sachliche Einordnung, Möglichkeiten und transparente Wahrscheinlichkeitseinschätzungen.">
+<meta name="twitter:title" content="Klaro KI – Antworten, die Zusammenhänge verstehen">
+<meta name="twitter:description" content="Klaro KI hilft dir, Informationen zu recherchieren, Quellen zu vergleichen und komplexe Themen verständlich zu erklären.">
 <meta name="twitter:image" content="https://klaroki3.vercel.app/meta/klaro-ki-x-card.png">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b4ca8">
-  <title>Klaro KI – Politische Fragen verständlich einordnen</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071827">
+<title>Klaro KI – Antworten, die Zusammenhänge verstehen</title>
+<link rel="stylesheet" href="style.css">
+<!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
 <script type="text/javascript" async=true>
 (function() {
   var host = "www.themoneytizer.de";
@@ -19,10 +19,8 @@
   var firstScript = document.getElementsByTagName('script')[0];
   var url = 'https://cmp.inmobi.com'
     .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
-  var reg = /^(https?:)?\/\/([a-zA-Z0-9.-]+)?(\/.*)?$/;
-  if (!reg.test(url)) {
-    throw new Error('Invalid URL');
-  }
+  var reg = /^(https?:)?\/\/[a-zA-Z0-9.-]+(\/.*)?$/;
+  if (!reg.test(url)) throw new Error('Invalid URL');
   element.async = true;
   element.type = 'text/javascript';
   element.src = url;
@@ -31,7 +29,6 @@
   function stub() {
     var TCF_LOCATOR_NAME = '__tcfapiLocator';
     var queue = [];
-    var cmpFrame;
     function addFrame() {
       var doc = window.document;
       var iframe = doc.createElement('iframe');
@@ -43,22 +40,15 @@
       var args = arguments;
       if (!args.length) return queue;
       if (args[0] === 'setGdprApplies') {
-        if (args.length > 3 && args[2] === 2 && typeof args[3] === 'boolean') {
-          window.__tcfapi.gdprApplies = args[3];
-          queue.push(args);
-        } else {
-          queue.push(args);
-        }
+        queue.push(args);
       } else if (args[0] === 'ping') {
         var retr = { gdprApplies: window.__tcfapi.gdprApplies, cmpLoaded: false, cmpStatus: 'stub', apiVersion: '2.2', tcfPolicyVersion: 4 };
         if (typeof args[2] === 'function') args[2](retr, true);
-      } else {
-        queue.push(args);
-      }
+      } else queue.push(args);
     }
     function postMessageEventHandler(event) {
       var json = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-      if (json.__tcfapiCall) {
+      if (json && json.__tcfapiCall) {
         window.__tcfapi(json.__tcfapiCall.command, json.__tcfapiCall.version, function(retValue, success) {
           var returnMsg = { __tcfapiReturn: { returnValue: retValue, success: success, callId: json.__tcfapiCall.callId } };
           event.source.postMessage(typeof event.data === 'string' ? JSON.stringify(returnMsg) : returnMsg, '*');
@@ -74,213 +64,255 @@
 
   function uspStubFunction() {
     var arg = arguments;
-    if (typeof window.__uspapi === 'function') {
-      window.__uspapi.apply(window, arg);
-    } else {
-      window.__uspapi = function() { (window.__uspapi.a = window.__uspapi.a || []).push(arguments); };
-    }
+    if (typeof window.__uspapi === 'function') window.__uspapi.apply(window, arg);
+    else window.__uspapi = function() { (window.__uspapi.a = window.__uspapi.a || []).push(arguments); };
   }
   uspStubFunction();
-
   var __tcfapi = window.__tcfapi;
   window.__tcfapi('init', 2, function() {}, { tag_version: 'V3' });
 })();
 </script>
-<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) --></head>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
+
+<style></style>
+
+<style id="klaro-page-entrance">
+#klaroPageContent {
+  animation: klaroPageEntrance 900ms cubic-bezier(.16, 1, .3, 1) both;
+  transform-origin: 50% 50%;
+  will-change: transform, filter;
+}
+@keyframes klaroPageEntrance {
+  0% {
+    opacity: .86;
+    filter: blur(12px);
+    transform: scale(1.075);
+  }
+  55% {
+    opacity: 1;
+    filter: blur(3px);
+    transform: scale(1.025);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #klaroPageContent {
+    animation: none;
+    filter: none;
+    transform: none;
+  }
+}
+</style>
+
+</head>
 <body>
-  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
-  <header class="topbar">
-<a class="klaro-brand" href="index.html" aria-label="Klaro KI – Startseite">
-  <span class="klaro-brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-  <span class="klaro-brand-word">klaro<span class="klaro-brand-ai">KI</span></span>
-  <span class="klaro-brand-tag">POLITIK KLARER SEHEN</span>
-</a>
-    <div class="system-online"><i></i><span>SYSTEM ONLINE</span></div><a class="admin-login-button" href="admin.html">LOGIN</a><span class="beta-badge">BETA</span>
-  </header>
-
-  
-
-
-<div class="app-shell">
-    <aside class="sidebar">
-      <div class="side-caption">POLITIK</div>
-      <button class="nav-button active" data-view="chat"><span>◉</span> KI-Chat <kbd>01</kbd></button>
-      <div class="side-divider"></div>
-      <div class="side-caption">WISSENSBASIS</div>
-      <div class="mini-status"><span class="pulse"></span><div><strong>Programm-Modus</strong><small>Begrenzte lokale Quellen</small></div><b>DE</b></div>
-      <div class="side-footer"><span class="tiny-reactor">✦</span><p>Politische Fragen und Antworten.<br><small>Quellen und Unsicherheit kenntlich machen.</small></p></div>
-    </aside>
-
-    <main class="main-area">
-      <section class="view active" id="chatView">
-        <div class="hero-row">
-          <div class="hero-copy">
-            <div class="eyebrow"><span class="eyebrow-line"></span> POLITIK VERSTÄNDLICH ERKLÄRT</div>
-            <h1>Politik verstehen.<br><span>Klarer einordnen.</span></h1>
-            <p class="lead">Stelle deine Frage. Klaro KI erklärt Zusammenhänge, trennt Positionen von Fakten und benennt offen, was unklar bleibt.</p>
-          </div>
-          <div class="reactor" aria-label="Klaro KI Systemanimation"><div class="reactor-ring ring-one"></div><div class="reactor-ring ring-two"></div><div class="reactor-core">✦</div><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span></div>
-        </div>
-        <section class="klaro-purpose" aria-labelledby="klaro-purpose-title">
-          <div class="purpose-icon" aria-hidden="true">✦</div>
-          <div class="purpose-copy">
-            <p class="purpose-eyebrow">Wofür Klaro da ist</p>
-            <h2 id="klaro-purpose-title">Politische Themen. Verständlich auf den Punkt.</h2>
-            <p>Klaro KI hilft dir, politische Fragen einzuordnen, mögliche Entwicklungen und Handlungsoptionen zu betrachten und – soweit die verfügbaren Informationen es zulassen – Wahrscheinlichkeiten abzuschätzen.</p>
-            <p class="purpose-honesty"><strong>Immer transparent:</strong> Parteiforderungen, überprüfbare Fakten und offene Fragen sollen klar voneinander unterschieden werden. Einschätzungen sind keine Garantien.</p>
-          </div>
-        </section>
-        <div class="quick-grid">
-          <button class="quick-card" data-prompt="Wie kann ich eine politische Frage verständlich und sachlich einordnen?"><span class="quick-icon">☏</span><strong>Stelle deine Fragen</strong><small>Einfach &amp; direkt</small><span class="card-arrow">↗</span></button>
-          <button class="quick-card" data-prompt="Erkläre mir eine politische Position verständlich und ohne Fachjargon. Trenne Forderungen und Fakten."><span class="quick-icon">▤</span><strong>Verständliche Erklärungen</strong><small>Ohne Fachchinesisch</small><span class="card-arrow">↗</span></button>
-          <button class="quick-card" data-prompt="Welche möglichen Entwicklungen und Folgen gibt es bei einer politischen Maßnahme? Bitte benenne Unsicherheiten."><span class="quick-icon">▥</span><strong>Möglichkeiten &amp; Folgen</strong><small>Realistisch eingeordnet</small><span class="card-arrow">↗</span></button>
-          <button class="quick-card" data-prompt="Wie unterscheidet man bei einem politischen Thema belegte Fakten, Parteipositionen und offene Fragen?"><span class="quick-icon">✓</span><strong>Immer ehrlich</strong><small>Unsicherheit offen benennen</small><span class="card-arrow">↗</span></button>
-        </div>
-        <div class="chat-panel">
-          <div class="panel-top"><div><span class="panel-indicator"></span><strong>Gespräch mit Klaro KI</strong></div><button id="clearChat" class="text-button">Gespräch leeren ↺</button></div>
-          <div id="chatMessages" class="chat-messages" aria-live="polite">
-            <div class="message assistant"><div class="message-avatar">✦</div><div><div class="message-name">Klaro KI <span>ASSISTENT</span></div><div class="message-bubble">Willkommen. Stelle eine politische Frage. Ich fasse Informationen aus der Wissensbasis und aktuellen Webquellen zu einer verständlichen, sachlichen Antwort zusammen und kennzeichne Unsicherheiten.</div></div></div>
-          </div>
-          <form id="chatForm" class="composer"><textarea id="chatInput" rows="1" placeholder="Stelle Klaro KI eine Frage …" aria-label="Frage an Klaro KI" required></textarea><button type="submit" aria-label="Senden">↑</button></form>
-          <div class="composer-bottom"><span>↳ ENTER zum Senden · SHIFT + ENTER für neue Zeile</span><span class="demo-label">KLARO KI · POLITIK <i></i></span></div>
-        </div>
-        <section class="klaro-ad-slot" aria-label="Sponsoring">
-          <div class="ad-label">ANZEIGE</div>
-          <div class="ad-copy">
-            <strong>Werde Klaro-Partner</strong>
-            <span>Datensparsame Sponsorenwerbung – getrennt von den politischen Antworten.</span>
-          </div>
-          <a class="ad-link" href="mailto:partner@klaro-ki.de?subject=Klaro%20KI%20Sponsoring">Partner werden ↗</a>
-        </section>
-        <section class="research-panel" aria-labelledby="research-title">
-          <div class="research-head">
-            <div><span class="eyebrow">RECHERCHE</span><h2 id="research-title">Wissensbasis &amp; Webquellen</h2></div>
-            <span id="researchStatus" class="research-status">Bereit</span>
-          </div>
-          <div id="researchResults" class="research-results">
-            <div class="research-empty">Die Rechercheergebnisse werden direkt in die Antwort von Klaro KI eingearbeitet.</div>
-          </div>
-        </section>
-      </section>
-
-    </main>
-  </div>
-
-  
-
-
-<section class="klaro-sources-footer" aria-labelledby="klaro-sources-title">
-  <div class="sources-footer-inner">
-    <div class="sources-footer-heading">
-      <div>
-        <p class="sources-eyebrow">TRANSPARENZ</p>
-        <h2 id="klaro-sources-title">So arbeitet Klaro KI</h2>
-        <p class="sources-description">Klaro verbindet die externe Wissensdatenbank mit aktueller Webrecherche. Gespeichertes Wissen und neue Webinformationen werden gemeinsam ausgewertet und zu einer verständlichen, zusammenhängenden Antwort verarbeitet.</p>
+  <div id="klaroPageContent">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Klaro KI – Startseite">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">klaro <b>KI</b></span>
+      </a>
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <a class="active" href="#start">Startseite</a>
+        <a href="#ueber-klaro">Über Klaro</a>
+        <a href="#themen">Themen <span aria-hidden="true">⌄</span></a>
+        <a href="#so-funktionierts">So funktioniert's</a>
+        <a href="#fragen">Fragen</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" type="button" aria-label="Suche" title="Suche">⌕</button>
+        <button class="icon-button" type="button" aria-label="Darstellung wechseln" title="Darstellung">☼</button>
+        <a class="admin-login-button" href="admin.html" aria-label="Admin-Bereich öffnen">ADMIN-LOGIN</a>
       </div>
     </div>
-    <div class="transparency-grid">
-      <div><strong>1 · Frage</strong><span>Die Frage wird eingeordnet und mit passenden Einträgen der Wissensdatenbank abgeglichen.</span></div>
-      <div><strong>2 · Recherche</strong><span>Falls aktuelle Informationen benötigt werden, wird eine Webrecherche ausgelöst.</span></div>
-      <div><strong>3 · Zusammenhänge</strong><span>Mehrere relevante Informationen werden verglichen und zu einer verständlichen Antwort zusammengeführt – nicht als rohe Trefferliste.</span></div>
-      <div><strong>4 · Lernen</strong><span>Neue Informationen werden strukturiert erfasst und können später erneut zur Beantwortung ähnlicher Fragen herangezogen werden.</span></div>
+  </header>
+
+  <main id="start">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-kicker"><span></span> KLAR UND VERSTÄNDLICH</p>
+          <h1>Klaro <em>KI</em><br><strong>Verstehen,<br>was wirklich zählt.</strong></h1>
+          <p class="hero-lead">Klaro KI recherchiert für dich, verbindet Informationen und zeigt dir Zusammenhänge – neutral, transparent und leicht verständlich.</p>
+          <div class="hero-points" aria-label="Vorteile">
+            <span>✓ Kostenlos</span><span>✓ Werbefrei mit Premium</span><span>✓ Unabhängig</span><span>✓ Für alle</span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Klaro KI Assistent">
+          <img src="media/hero-klaro-berlin-abend.jpg" alt="Klaro KI Assistent vor einer Abendkulisse in Berlin">
+        </div>
+      </div>
+
+      <div class="question-wrap" id="fragen">
+        <div class="examples">
+          <strong>Beispiele:</strong>
+          <button type="button" data-prompt="Wie funktioniert das Rentensystem?">Wie funktioniert das Rentensystem?</button>
+          <button type="button" data-prompt="Welche aktuellen Entwicklungen gibt es in der EU?">Aktuelle Entwicklungen in der EU</button>
+          <button type="button" data-prompt="Welche Vorteile und Nachteile haben Wärmepumpen?">Vorteile und Nachteile von Wärmepumpen</button>
+        </div>
+        <form id="chatForm" class="question-box">
+          <span class="question-icon" aria-hidden="true">⌕</span>
+          <textarea id="chatInput" rows="1" placeholder="Was möchtest du wissen?" aria-label="Frage an Klaro KI" required></textarea>
+          <button type="submit">Fragen <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </section>
+
+    <section class="feature-section" id="ueber-klaro" aria-label="Klaro KI Funktionen">
+      <article class="feature-card feature-blue"><div class="feature-icon">ϟ</div><h2>Schnelle Antworten</h2><p>Erhalte klare und verständliche Antworten auf deine Fragen – ohne komplizierte Fachsprache.</p><span class="round-arrow">→</span></article>
+      <article class="feature-card feature-green"><div class="feature-icon">⌕</div><h2>Tiefere Recherche</h2><p>Klaro KI durchsucht aktuelle Nachrichten, Fachquellen und offizielle Dokumente für dich.</p><span class="round-arrow">→</span></article>
+      <article class="feature-card feature-gold"><div class="feature-icon">▤</div><h2>Quellen vergleichen</h2><p>Unterschiedliche Perspektiven werden zusammengefasst und transparent dargestellt.</p><span class="round-arrow">→</span></article>
+      <article class="feature-card feature-violet"><div class="feature-icon">⌘</div><h2>Zusammenhänge erkennen</h2><p>Klaro KI hilft dir, komplexe Themen besser zu verstehen und größere Zusammenhänge zu sehen.</p><span class="round-arrow">→</span></article>
+    </section>
+
+    <section class="topics-section" id="themen">
+      <div class="section-heading"><div><h2>Beliebte Themen</h2><p>Entdecke Themen, die viele Menschen beschäftigen.</p></div><a href="#fragen">Alle Themen ansehen →</a></div>
+      <div class="topic-grid">
+        <a class="topic-card topic-politik" href="#fragen" data-prompt="Erkläre mir die aktuellen politischen Entwicklungen in Deutschland."><span>Politik</span><small>Aktuelle Entwicklungen und Hintergründe</small></a>
+        <a class="topic-card topic-wirtschaft" href="#fragen" data-prompt="Erkläre mir eine aktuelle wirtschaftliche Entwicklung verständlich."><span>Wirtschaft</span><small>Einfach erklärt</small></a>
+        <a class="topic-card topic-umwelt" href="#fragen" data-prompt="Welche wichtigen Entwicklungen gibt es beim Klimaschutz?"><span>Umwelt</span><small>Fakten und Lösungen</small></a>
+        <a class="topic-card topic-bildung" href="#fragen" data-prompt="Welche aktuellen Themen sind für Bildung und Studium wichtig?"><span>Bildung</span><small>Chancen und Perspektiven</small></a>
+        <a class="topic-card topic-tech" href="#fragen" data-prompt="Welche aktuellen Technologietrends sind relevant?"><span>Technologie</span><small>Trends und Auswirkungen</small></a>
+        <a class="topic-card topic-gesellschaft" href="#fragen" data-prompt="Welche gesellschaftlichen Entwicklungen sind aktuell wichtig?"><span>Gesellschaft</span><small>Menschen und Zusammenhalt</small></a>
+      </div>
+    </section>
+
+    <section class="how-section" id="so-funktionierts">
+      <div class="how-heading"><h2>So funktioniert Klaro KI</h2><p>Von deiner Frage zur verständlichen Antwort – in wenigen Schritten.</p></div>
+      <div class="steps">
+        <div class="step"><b>1</b><div class="step-icon">☏</div><h3>Du stellst eine Frage</h3><p>Schreibe einfach, was dich interessiert – in deinen eigenen Worten.</p></div>
+        <div class="step-arrow">→</div>
+        <div class="step"><b>2</b><div class="step-icon">⌕</div><h3>Klaro KI recherchiert</h3><p>Wir durchsuchen aktuelle Nachrichten, Fachquellen und weitere verlässliche Informationsquellen.</p></div>
+        <div class="step-arrow">→</div>
+        <div class="step"><b>3</b><div class="step-icon">▤</div><h3>Informationen werden analysiert</h3><p>Wichtige Inhalte werden geprüft, miteinander verglichen und verständlich aufbereitet.</p></div>
+        <div class="step-arrow">→</div>
+        <div class="step"><b>4</b><div class="step-icon">✓</div><h3>Du erhältst eine Antwort</h3><p>Mit klaren Ergebnissen, wichtigen Zusammenhängen und den verwendeten Quellen.</p></div>
+      </div>
+    </section>
+
+    <section class="workspace-section" aria-label="Klaro KI Gespräch">
+      <div class="workspace-head"><div><span class="eyebrow">DEIN GESPRÄCH</span><h2>Frag Klaro direkt</h2></div><button id="clearChat" class="clear-button" type="button">Gespräch leeren ↺</button></div>
+      <div id="chatMessages" class="chat-messages" aria-live="polite">
+        <div class="message assistant"><div class="message-avatar">✦</div><div><div class="message-name">Klaro KI <span>ASSISTENT</span></div><div class="message-bubble">Willkommen. Stelle eine Frage. Ich fasse Informationen aus der Wissensbasis und aktuellen Webquellen verständlich zusammen und kennzeichne Unsicherheiten.</div></div></div>
+      </div>
+      <div class="workspace-hint">↳ ENTER zum Senden · SHIFT + ENTER für neue Zeile</div>
+    </section>
+
+    <section class="research-panel" aria-labelledby="research-title">
+      <div class="research-head"><div><span class="eyebrow">RECHERCHE</span><h2 id="research-title">Wissensbasis &amp; Webquellen</h2></div><span id="researchStatus" class="research-status">Bereit</span></div>
+      <div id="researchResults" class="research-results"><div class="research-empty">Die Rechercheergebnisse werden direkt in die Antwort von Klaro KI eingearbeitet.</div></div>
+    </section>
+
+    <section class="premium-section" id="premium">
+      <div class="premium-image"></div>
+      <div class="premium-card">
+        <span class="premium-label">♛ Klaro KI Premium</span>
+        <h2>Für noch tiefere Einblicke</h2>
+        <p>Mit Klaro KI Premium erhältst du ausführlichere Recherchen, mehr Quellen und erweiterte Analysefunktionen.</p>
+        <div class="premium-list"><span>✓ Tiefere Recherche</span><span>✓ Mehr Quellen</span><span>✓ Erweiterte Analysen</span><span>✓ Komplexe Zusammenhänge</span><span>✓ Priorisierter Zugriff</span></div>
+        <button type="button" class="premium-cta" id="premiumLearnMore">Mehr erfahren →</button>
+      </div>
+    </section>
+
+    <section class="audience-section">
+      <div><h2>Für alle, die mehr verstehen wollen.</h2><p>Ob Alltag, Beruf, Studium oder persönliche Interessen – Klaro KI ist dein Begleiter für fundierte Informationen und ein besseres Verständnis der Welt.</p></div>
+      <div class="audience-grid"><span>♢<b>Schüler &amp;<br>Studierende</b></span><span>♧<b>Familien</b></span><span>▣<b>Berufstätige</b></span><span>♙<b>Senioren</b></span><span>◎<b>Alle Interessierten</b></span></div>
+    </section>
+
+    <section class="klaro-ad-slot" aria-label="Sponsoring"><div class="ad-label">ANZEIGE</div><div class="ad-copy"><strong>Werde Klaro-Partner</strong><span>Datensparsame Sponsorenwerbung – getrennt von den politischen Antworten.</span></div><a class="ad-link" href="mailto:partner@klaro-ki.de?subject=Klaro%20KI%20Sponsoring">Partner werden ↗</a></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="footer-mark">✦</span><strong>Klaro KI</strong><small>Politik verständlich erklärt.</small></div>
+      <nav aria-label="Footer Navigation"><a href="#ueber-klaro">Über Klaro</a><a href="#fragen">Häufige Fragen</a><button type="button" class="footer-link-button" id="privacyButton">Datenschutz</button><a href="impressum.html">Impressum</a><a href="mailto:partner@klaroki.de?subject=Kontakt%20Klaro%20KI">Kontakt</a></nav>
+      <div class="social-links" aria-label="Social Media"><span>◉</span><span>𝕏</span><span>▶</span><span>◎</span></div>
     </div>
-  </div>
-</section>
-<section class="business-plus">
-  <div class="business-plus-head">
-    <span class="business-label">KLARO KI ANGEBOTE</span>
-    <h2>Mehr aus Klaro machen</h2>
-    <p>Für Nutzer, Unternehmen und Organisationen – klar getrennt von der politischen Antwortlogik.</p>
+    <div class="copyright">© 2026 Klaro KI · Alle Rechte vorbehalten.</div>
+  </footer>
+
   </div>
 
-  <div class="business-grid">
-    <article class="business-card">
-      <span class="business-card-tag">NUTZER</span>
-      <h3>Premium-Mitgliedschaft</h3>
-      <p>Werbefrei, ausführlichere Recherche, mehr Quellenvergleich und tiefere Antworten.</p>
-    </article>
-
-    <article class="business-card">
-      <span class="business-card-tag">UNTERNEHMEN</span>
-      <h3>Werbepartner werden</h3>
-      <p>Transparente Partnerflächen für Unternehmen – getrennt von Klaros redaktionellen Antworten.</p>
-      <a href="mailto:dirkpelikan@freenet.de?subject=Werbepartnerschaft%20Klaro%20KI" class="business-small-btn">Partnerschaft anfragen</a>
-    </article>
-
-    <article class="business-card">
-      <span class="business-card-tag">RECHERCHE</span>
-      <h3>Politische Dossiers</h3>
-      <p>Ausführliche Themenaufbereitung mit Quellenvergleich, Zeitlinien und verständlicher Zusammenfassung.</p>
-      <a href="mailto:premium@klaroki.de?subject=Klaro%20KI%20Dossier" class="business-small-btn">Dossier anfragen</a>
-    </article>
-
-    <article class="business-card">
-      <span class="business-card-tag">B2B</span>
-      <h3>Klaro für Organisationen</h3>
-      <p>Individuelle Recherche- und Wissenslösungen für Unternehmen und Bildungseinrichtungen.</p>
-      <a href="mailto:partner@klaroki.de?subject=Klaro%20KI%20B2B" class="business-small-btn">B2B anfragen</a>
-    </article>
+  <div class="premium-modal" id="premiumModal" aria-hidden="true">
+    <div class="premium-modal-backdrop" data-premium-close></div>
+    <section class="premium-modal-card" role="dialog" aria-modal="true" aria-labelledby="premiumModalTitle">
+      <button type="button" class="premium-modal-close" id="premiumModalClose" aria-label="Fenster schließen">×</button>
+      <span class="premium-label">♛ Klaro KI Premium</span>
+      <h2 id="premiumModalTitle">Für noch tiefere Einblicke.</h2>
+      <p class="premium-modal-intro">Mit Klaro KI Premium erhältst du mehr Tiefe bei Recherche, Quellenvergleich und Analyse.</p>
+      <div class="premium-modal-benefits">
+        <div><span>✓</span><strong>Tiefere Recherche</strong><small>Ausführlichere Recherchen zu deinen Fragen.</small></div>
+        <div><span>✓</span><strong>Mehr Quellen</strong><small>Zusätzliche relevante Informationsquellen.</small></div>
+        <div><span>✓</span><strong>Erweiterte Analysen</strong><small>Mehr Einordnung und detailliertere Auswertung.</small></div>
+        <div><span>✓</span><strong>Komplexe Zusammenhänge</strong><small>Größere Themen verständlich miteinander verbinden.</small></div>
+        <div><span>✓</span><strong>Priorisierter Zugriff</strong><small>Premium-Zugriff auf die erweiterten Funktionen.</small></div>
+      </div>
+      <div class="premium-modal-price"><strong>1,49 €</strong><span>pro Monat</span></div>
+      <button type="button" class="premium-subscribe-button" id="premiumSubscribe">Kostenpflichtig Abonnieren</button>
+      <button type="button" class="premium-decline-button" id="premiumDecline">Nein Danke</button>
+      <p class="premium-modal-note" id="premiumCheckoutStatus" aria-live="polite"></p>
+    </section>
   </div>
-</section>
 
-
+  <button type="button" id="klaroTopButton" aria-label="Zum Seitenanfang">↑</button>
   <script src="app.js"></script>
+  <script>
+    document.getElementById('klaroTopButton').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+    const premiumModal = document.getElementById('premiumModal');
+    const premiumLearnMore = document.getElementById('premiumLearnMore');
+    const premiumModalClose = document.getElementById('premiumModalClose');
+    const premiumDecline = document.getElementById('premiumDecline');
+    const premiumSubscribe = document.getElementById('premiumSubscribe');
+    const premiumCheckoutStatus = document.getElementById('premiumCheckoutStatus');
 
+    function openPremiumModal(){
+      premiumCheckoutStatus.textContent = '';
+      premiumModal.classList.add('is-open');
+      premiumModal.setAttribute('aria-hidden','false');
+      document.body.classList.add('modal-open');
+      premiumModalClose.focus();
+    }
+    function closePremiumModal(){
+      premiumModal.classList.remove('is-open');
+      premiumModal.setAttribute('aria-hidden','true');
+      document.body.classList.remove('modal-open');
+    }
+    premiumLearnMore.addEventListener('click', openPremiumModal);
+    premiumModalClose.addEventListener('click', closePremiumModal);
+    premiumDecline.addEventListener('click', closePremiumModal);
+    premiumModal.addEventListener('click', (event) => {
+      if (event.target.matches('[data-premium-close]')) closePremiumModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && premiumModal.classList.contains('is-open')) closePremiumModal();
+    });
 
-
-
-
-
-
-
-
-
-
-
-
-<footer class="klaro-final-footer">
-  <div class="klaro-final-footer-inner">
-    <div class="klaro-footer-brand"><strong>Klaro KI</strong><span>Politik verständlich erklärt.</span></div>
-    <nav aria-label="Rechtliche und geschäftliche Links">
-      <a href="impressum.html">Impressum</a>
-      <button type="button" class="footer-link-button" id="privacyButton">Datenschutz</button>
-      <a href="mailto:partner@klaroki.de?subject=Werbepartnerschaft%20Klaro%20KI">Werbepartnerschaft</a>
-      <a href="mailto:premium@klaroki.de?subject=Klaro%20KI%20Premium">Premium-Mitgliedschaft</a>
-    </nav>
-    <div class="klaro-copyright">© 2026 Klaro KI · Alle Rechte vorbehalten.</div>
-  </div>
-</footer>
-
-
-<style>
-  #klaroTopButton {
-    position: fixed;
-    right: 14px;
-    bottom: 14px;
-    width: 3mm;
-    height: 3mm;
-    min-width: 3mm;
-    min-height: 3mm;
-    padding: 0;
-    border: 1px solid rgba(160, 210, 255, 0.45);
-    border-radius: 3px;
-    background: rgba(20, 60, 110, 0.45);
-    color: rgba(220, 240, 255, 0.8);
-    font-size: 7px;
-    line-height: 1;
-    cursor: pointer;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-</style>
-<button type="button" id="klaroTopButton" aria-label="Zum Seitenanfang">↑</button>
-<script>
-  document.getElementById('klaroTopButton').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-</script>
-
+    premiumSubscribe.addEventListener('click', async () => {
+      premiumSubscribe.disabled = true;
+      premiumCheckoutStatus.textContent = 'Stripe wird geöffnet …';
+      try {
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({})
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.url) throw new Error(data.error || 'Stripe-Checkout konnte nicht gestartet werden.');
+        window.location.href = data.url;
+      } catch (error) {
+        premiumCheckoutStatus.textContent = error.message || 'Der Stripe-Checkout konnte nicht gestartet werden.';
+        premiumSubscribe.disabled = false;
+      }
+    });
+    document.querySelectorAll('.topic-card[data-prompt]').forEach(card => card.addEventListener('click', () => {
+      const input = document.getElementById('chatInput');
+      if (input) { input.value = card.dataset.prompt; input.focus(); }
+    }));
+  </script>
 </body>
 </html>
