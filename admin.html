@@ -107,6 +107,27 @@ body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparen
 @media(max-width:900px){.dashboard-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.system-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.compact-columns{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-main-grid{grid-template-columns:1fr}.insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){body{padding:14px 10px 28px}.admin-topbar{align-items:flex-start;flex-direction:column;padding:15px}.admin-brand-wrap{align-items:flex-start}.admin-top-actions{width:100%;justify-content:space-between}.admin-nav{top:6px}.admin-hero-panel{align-items:flex-start;flex-direction:column;padding:16px}.admin-hero-panel h2{font-size:21px}.hero-meta{width:100%;text-align:left}.dashboard-kpis,.system-grid,.insight-grid,.analytics-columns,.compact-columns{grid-template-columns:1fr}.section-heading{align-items:flex-start;flex-direction:column}.analytics-heading{align-items:stretch}.admin-analytics-actions{width:100%}.admin-analytics-actions select,.admin-analytics-actions button{flex:1}.trend-chart{height:170px}}
 
+
+/* Audit log */
+.audit-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.audit-toolbar select,.audit-toolbar button{border:1px solid rgba(118,199,255,.20);border-radius:9px;background:#081c3c;color:#dff3ff;padding:9px 10px;font-size:10px;font-weight:800}
+.audit-toolbar button{cursor:pointer}
+.audit-message{margin:0 0 10px;padding:10px 12px;border:1px solid rgba(118,199,255,.14);border-radius:10px;background:rgba(255,255,255,.035);color:#8ea9bf;font-size:10px}
+.audit-table-wrap{overflow:auto;border:1px solid rgba(118,199,255,.13);border-radius:14px}
+.audit-table{width:100%;border-collapse:collapse;min-width:930px}
+.audit-table th{padding:9px 10px;text-align:left;color:#7896aa;background:rgba(255,255,255,.035);font-size:9px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.audit-table td{padding:9px 10px;border-top:1px solid rgba(255,255,255,.055);color:#c9dce8;font-size:9px;vertical-align:top}
+.audit-table tr:hover td{background:rgba(86,184,255,.035)}
+.audit-time{white-space:nowrap;color:#9eb9c9}
+.audit-status{display:inline-flex;padding:3px 7px;border-radius:999px;font-size:8px;font-weight:900;text-transform:uppercase}
+.audit-status.success{color:#6ee7b7;background:rgba(83,230,160,.08)}
+.audit-status.error{color:#ff8d99;background:rgba(255,111,125,.08)}
+.audit-muted{color:#718ea3}
+.audit-code{max-width:260px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#a9cbe0}
+.audit-details{margin:0;padding:7px 8px;border-radius:8px;background:rgba(0,0,0,.16);max-width:330px;white-space:pre-wrap;word-break:break-word;color:#9fc3d8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;line-height:1.45}
+.audit-row-detail summary{cursor:pointer;color:#70c8ff;font-weight:800;font-size:8px}
+@media(max-width:700px){.audit-toolbar select,.audit-toolbar button{flex:1}.audit-table{min-width:850px}}
+
 </style>
 </head>
 <body>
@@ -135,6 +156,7 @@ body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparen
   <nav class="admin-nav" aria-label="Admin-Navigation">
     <a href="#dashboardOverview">Übersicht</a>
     <a href="#adminAnalytics">Analytics</a>
+    <a href="#adminAudit">Aktivitäten</a>
     <a href="#adminTechnology">Technik</a>
     <a href="#adminAudience">Nutzung</a>
     <a href="#adminSources">Quellen</a>
@@ -179,7 +201,38 @@ body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparen
     <div class="system-overall" id="klaroStatusOverall"><span class="status-dot"></span><strong>Gesamtsystem: Prüfung …</strong></div>
   </section>
 
-  <section id="adminAnalytics" class="admin-section hidden" aria-labelledby="adminAnalyticsTitle">
+  
+<section id="adminAudit" class="admin-section hidden" aria-labelledby="adminAuditTitle">
+  <div class="section-heading">
+    <div>
+      <span class="section-eyebrow">AUDIT LOG</span>
+      <h2 id="adminAuditTitle">Was schreibt Klaro?</h2>
+      <p>Serverseitig protokollierte Schreibvorgänge: wann, was, woher, wohin und mit welchem Ergebnis.</p>
+    </div>
+  </div>
+  <div class="audit-toolbar">
+    <select id="auditStatus" aria-label="Audit-Status">
+      <option value="">Alle Status</option>
+      <option value="success">Erfolgreich</option>
+      <option value="error">Fehler</option>
+    </select>
+    <button id="auditRefresh" type="button">↻ Aktualisieren</button>
+  </div>
+  <div id="auditMessage" class="audit-message">Aktivitätsprotokoll wird geladen …</div>
+  <div id="auditContent" class="hidden">
+    <div class="audit-table-wrap">
+      <table class="audit-table">
+        <thead><tr>
+          <th>Wann</th><th>Aktion</th><th>Quelle</th><th>Ziel</th>
+          <th>Datensatz</th><th>Status</th><th>Request-ID</th><th>Details</th>
+        </tr></thead>
+        <tbody id="auditRows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="adminAnalytics" class="admin-section hidden" aria-labelledby="adminAnalyticsTitle">
     <div class="section-heading analytics-heading">
       <div><span class="section-eyebrow">ANALYTICS</span><h2 id="adminAnalyticsTitle">Besucher &amp; Nutzung</h2><p>Anonyme Nutzungsstatistik nach entsprechender CMP-Einwilligung.</p></div>
       <div class="admin-analytics-actions"><select id="analyticsPeriod" aria-label="Zeitraum"><option value="7">7 Tage</option><option value="30" selected>30 Tage</option><option value="90">90 Tage</option><option value="365">365 Tage</option></select><button id="analyticsRefresh" type="button">↻ Aktualisieren</button></div>
@@ -236,8 +289,48 @@ function renderTrend(daily){const el=document.getElementById('analyticsTrend');i
 function renderInsights(data){const s=data.summary||{}, rows=[];const top=(arr)=>arr&&arr.length?arr[0]:null;const device=top(data.devices),country=top(data.countries),ref=top(data.referrers),page=top(data.pages),interaction=top(data.interaction_types);if(device)rows.push(['◉','Häufigstes Gerät',device.name,fmtNumber(device.count)]);if(country)rows.push(['◎','Top-Land',country.name,fmtNumber(country.count)]);if(ref)rows.push(['↗','Top-Zugriffsquelle',ref.name,fmtNumber(ref.count)]);if(page)rows.push(['▤','Meistbesuchte Seite',page.name,fmtNumber(page.count)]);if(interaction)rows.push(['✦','Häufigste UI-Aktion',interaction.name,fmtNumber(interaction.count)]);if(!rows.length)rows.push(['·','Noch keine Muster','Keine Daten im Zeitraum','0']);document.getElementById('analyticsInsights').innerHTML=rows.map(r=>`<div class="insight-row"><span class="insight-icon">${r[0]}</span><div><strong>${r[1]}</strong><small>${String(r[2]).replace(/</g,'&lt;')}</small></div><b>${r[3]}</b></div>`).join('');}
 function renderAnalytics(data){const s=data.summary||{};const success=Number(s.ai_successes||0),errors=Number(s.ai_errors||0),results=success+errors;const rate=results?Math.round(success/results*100):0;document.getElementById('statVisitors').textContent=fmtNumber(s.visitors);document.getElementById('statSessions').textContent=fmtNumber(s.sessions);document.getElementById('statPageViews').textContent=fmtNumber(s.page_views);document.getElementById('statAi').textContent=fmtNumber(s.ai_interactions);document.getElementById('statAiSuccess').textContent=fmtNumber(success);document.getElementById('statAiErrors').textContent=fmtNumber(errors);document.getElementById('statAiRate').textContent=results?`${rate}%`:'–';document.getElementById('statAvgDuration').textContent=fmtSeconds(s.avg_session_seconds);document.getElementById('statTotalDuration').textContent=`${Number(s.total_session_minutes||0).toLocaleString('de-DE',{maximumFractionDigits:1})} Min.`;document.getElementById('statAvgAi').textContent=fmtSeconds(s.avg_ai_seconds);document.getElementById('statPagesPerSession').textContent=s.sessions?(Number(s.page_views||0)/Number(s.sessions||1)).toLocaleString('de-DE',{maximumFractionDigits:1}):'–';document.getElementById('statAiPerVisitor').textContent=s.visitors?(Number(s.ai_interactions||0)/Number(s.visitors||1)).toLocaleString('de-DE',{maximumFractionDigits:1}):'–';document.getElementById('dashboardPeriodLabel').textContent=`${data.period_days||analyticsPeriod.value} Tage`;document.getElementById('dashboardUpdated').textContent=data.generated_at?`Aktualisiert ${new Date(data.generated_at).toLocaleString('de-DE')}`:'Aktualisiert';renderTrend(data.daily);renderInsights(data);renderAnalyticsList('analyticsDevices',data.devices);renderAnalyticsList('analyticsBrowsers',data.browsers);renderAnalyticsList('analyticsScreens',data.screens);renderAnalyticsList('analyticsOs',data.operating_systems);renderAnalyticsList('analyticsLanguages',data.languages);renderAnalyticsList('analyticsCountries',data.countries);renderAnalyticsList('analyticsReferrers',data.referrers);renderAnalyticsList('analyticsPages',data.pages);renderAnalyticsList('analyticsInteractions',data.interaction_types);const daily=document.getElementById('analyticsDaily');daily.innerHTML=(data.daily||[]).slice(-31).reverse().map(x=>`<div class="analytics-day"><strong>${x.date}</strong><small>Besucher: ${fmtNumber(x.visitors)}<br>KI: ${fmtNumber(x.ai_interactions)}<br>Aufrufe: ${fmtNumber(x.page_views)}</small></div>`).join('')||'<div class="analytics-day"><strong>Keine Daten</strong></div>';}
 async function loadAnalytics(){analyticsMessage.textContent='Statistik wird geladen …';analyticsMessage.classList.remove('hidden');analyticsContent.classList.add('hidden');try{const r=await fetch(`/api/analytics-stats?days=${encodeURIComponent(analyticsPeriod.value)}`,{credentials:'same-origin',cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.error||'Analytics konnten nicht geladen werden.');renderAnalytics(d);analyticsMessage.classList.add('hidden');analyticsContent.classList.remove('hidden');}catch(e){analyticsMessage.textContent=e.message;}}
-function showAdmin(){loginView.classList.add('hidden');adminView.classList.remove('hidden');adminStatus.classList.remove('hidden');adminAnalytics.classList.remove('hidden');checkStatus();loadAnalytics();}
+
+const adminAudit=document.getElementById('adminAudit');
+const auditContent=document.getElementById('auditContent');
+const auditMessage=document.getElementById('auditMessage');
+const auditStatus=document.getElementById('auditStatus');
+const auditRows=document.getElementById('auditRows');
+const escAudit=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const auditJson=v=>{try{return JSON.stringify(v??null,null,2);}catch{return String(v??'');}};
+const fmtAuditDate=v=>{const d=new Date(v);return Number.isNaN(d.getTime())?String(v||'–'):d.toLocaleString('de-DE',{dateStyle:'short',timeStyle:'medium'});};
+function renderAudit(rows){
+  auditRows.innerHTML=(rows||[]).map(x=>{
+    const status=String(x.status||'unknown').toLowerCase();
+    const source=[x.source_type,x.source_name].filter(Boolean).join(' / ')||'–';
+    const details={geschrieben:x.written_data,ergebnis:x.result_data,fehler:x.error_message,metadata:x.metadata,query:x.query_text};
+    return `<tr>
+      <td class="audit-time">${escAudit(fmtAuditDate(x.created_at))}</td>
+      <td><strong>${escAudit(x.action||'–')}</strong></td>
+      <td>${escAudit(source)}</td><td>${escAudit(x.source_table||'–')}</td>
+      <td>${escAudit(x.record_id||'–')}</td>
+      <td><span class="audit-status ${status==='error'?'error':'success'}">${escAudit(status)}</span></td>
+      <td class="audit-code">${escAudit(x.request_id||'–')}</td>
+      <td class="audit-row-detail"><details><summary>anzeigen</summary><pre class="audit-details">${escAudit(auditJson(details))}</pre></details></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8" class="audit-muted">Keine Audit-Einträge im gewählten Filter.</td></tr>';
+}
+async function loadAudit(){
+  auditMessage.textContent='Aktivitätsprotokoll wird geladen …';
+  auditMessage.classList.remove('hidden'); auditContent.classList.add('hidden');
+  try{
+    const q=new URLSearchParams({limit:'100'});
+    if(auditStatus.value)q.set('status',auditStatus.value);
+    const r=await fetch(`/api/audit-log?${q.toString()}`,{credentials:'same-origin',cache:'no-store'});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||`Audit-Log konnte nicht geladen werden (HTTP ${r.status}).`);
+    renderAudit(d.rows||[]);
+    auditMessage.classList.add('hidden'); auditContent.classList.remove('hidden');
+  }catch(e){auditMessage.textContent=e.message;}
+}
+
+function showAdmin(){loginView.classList.add('hidden');adminView.classList.remove('hidden');adminStatus.classList.remove('hidden');adminAnalytics.classList.remove('hidden');adminAudit.classList.remove('hidden');checkStatus();loadAnalytics();loadAudit();}
 document.getElementById('analyticsRefresh').addEventListener('click',loadAnalytics);analyticsPeriod.addEventListener('change',loadAnalytics);
+document.getElementById('auditRefresh').addEventListener('click',loadAudit);auditStatus.addEventListener('change',loadAudit);
 
 async function checkSession(){try{const r=await fetch('/api/admin-session',{credentials:'same-origin',cache:'no-store'});const d=await r.json();if(d.admin)showAdmin();}catch(_){} }
 document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();message.textContent='';const body={email:document.getElementById('email').value.trim(),password:document.getElementById('password').value};try{const r=await fetch('/api/admin-login',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||`Login fehlgeschlagen (HTTP ${r.status}).`);const session=await fetch('/api/admin-session',{credentials:'same-origin',cache:'no-store'});const sessionData=await session.json().catch(()=>({}));if(!session.ok||!sessionData.admin)throw new Error('Login wurde angenommen, aber die Admin-Sitzung konnte nicht gesetzt werden.');showAdmin();}catch(err){message.textContent=err.message;}});
