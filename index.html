@@ -224,7 +224,7 @@
       <div class="audience-grid"><span>♢<b>Schüler &amp;<br>Studierende</b></span><span>♧<b>Familien</b></span><span>▣<b>Berufstätige</b></span><span>♙<b>Senioren</b></span><span>◎<b>Alle Interessierten</b></span></div>
     </section>
 
-    <section class="klaro-ad-slot" aria-label="Sponsoring"><div class="ad-label">ANZEIGE</div><div class="ad-copy"><strong>Werde Klaro-Partner</strong><span>Datensparsame Sponsorenwerbung – getrennt von den politischen Antworten.</span></div><a class="ad-link" href="mailto:partner@klaro-ki.de?subject=Klaro%20KI%20Sponsoring">Partner werden ↗</a></section>
+    <section class="klaro-ad-slot" aria-label="Sponsoring"><div class="ad-label">ANZEIGE</div><div class="ad-copy"><strong>Werde Klaro-Partner</strong><span>Datensparsame Sponsorenwerbung – getrennt von den politischen Antworten.</span></div><a class="ad-link" href="#partner-anfrage" id="partnerInquiryButton">Partner werden ↗</a></section>
   </main>
 
   <footer class="site-footer">
@@ -263,6 +263,15 @@
   <script src="app.js"></script>
   <script>
     document.getElementById('klaroTopButton').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+    const partnerInquiryButton = document.getElementById('partnerInquiryButton');
+    if (partnerInquiryButton) {
+      partnerInquiryButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const recipient = [100,105,114,107,112,101,108,105,107,97,110,64,105,99,108,111,117,100,46,99,111,109].map(code => String.fromCharCode(code)).join('');
+        const subject = encodeURIComponent('Klaro KI Partner Anfrage');
+        window.location.href = `mailto:${recipient}?subject=${subject}`;
+      });
+    }
     const premiumModal = document.getElementById('premiumModal');
     const premiumLearnMore = document.getElementById('premiumLearnMore');
     const premiumModalClose = document.getElementById('premiumModalClose');
