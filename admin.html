@@ -119,7 +119,15 @@ body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparen
   .audit-detail{max-width:330px;white-space:pre-wrap;word-break:break-word;color:#8ea9bf}
   .audit-empty{padding:18px;color:#8ea9bf;text-align:center}
   .audit-action{font-weight:800;color:#dff3ff}
-  @media(max-width:760px){.audit-table{min-width:900px}.audit-detail{max-width:260px}}
+  @media(max-width:760px){.audit-table{min-width:900px}.audit-detail{max-width:260px}.audit-toggle{appearance:none;border:0;background:transparent;color:#dff3ff;font:inherit;font-weight:800;cursor:pointer;padding:0;text-align:left}
+.audit-toggle::after{content:'＋';display:inline-block;margin-left:7px;color:#75c8ff;font-weight:700}
+.audit-toggle[aria-expanded="true"]::after{content:'−'}
+.audit-table tr.audit-detail-row td{padding:0;border-bottom:1px solid rgba(118,199,255,.10);background:rgba(3,14,35,.72)}
+.audit-detail-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px}
+.audit-detail-card{border:1px solid rgba(118,199,255,.12);border-radius:10px;padding:10px;background:rgba(8,25,56,.72)}
+.audit-detail-label{display:block;margin-bottom:5px;color:#75c8ff;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.audit-detail-value{margin:0;color:#dff3ff;font-size:10px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
+@media (max-width:700px){.audit-detail-panel{grid-template-columns:1fr}}}
 </style>
 </head>
 <body>
@@ -293,12 +301,17 @@ function auditJson(v){if(v==null)return '';try{return JSON.stringify(v,null,2);}
 function renderAudit(rows){
   const el=document.getElementById('auditRows');
   if(!el)return;
-  if(!Array.isArray(rows)||!rows.length){el.innerHTML='<tr><td colspan="8" class="audit-empty">Keine protokollierten Schreibvorgänge vorhanden.</td></tr>';return;}
-  el.innerHTML=rows.map(row=>{
+  if(!Array.isArray(rows)||!rows.length){
+    el.innerHTML='<tr><td colspan="8" class="audit-empty">Keine protokollierten Schreibvorgänge vorhanden.</td></tr>';
+    return;
+  }
+
+  el.innerHTML=rows.map((row,index)=>{
     const when=row.created_at?new Date(row.created_at).toLocaleString('de-DE'):'–';
     const source=[row.source_type,row.source_name].filter(Boolean).join(' / ')||'–';
     const target=[row.source_table,row.record_id?`#${row.record_id}`:''].filter(Boolean).join(' ')||'–';
     const status=String(row.status||'').toLowerCase();
+    const detailId=`audit-detail-${index}`;
     const detail=[
       row.written_data!=null?`GESCHRIEBEN:\n${auditJson(row.written_data)}`:'',
       row.result_data!=null?`ERGEBNIS:\n${auditJson(row.result_data)}`:'',
@@ -306,7 +319,17 @@ function renderAudit(rows){
       row.metadata!=null?`METADATA:\n${auditJson(row.metadata)}`:'',
       row.query_text?`QUERY:\n${row.query_text}`:''
     ].filter(Boolean).join('\n\n')||'–';
-    return `<tr>
+
+    const detailCards=[
+      ['Geschrieben',row.written_data!=null?auditJson(row.written_data):'–'],
+      ['Ergebnis',row.result_data!=null?auditJson(row.result_data):'–'],
+      ['Fehler',row.error_message||'–'],
+      ['Metadaten',row.metadata!=null?auditJson(row.metadata):'–'],
+      ['Query',row.query_text||'–'],
+      ['Request-ID',row.request_id||'–']
+    ];
+
+    return `<tr class="audit-main-row">
       <td>${auditEsc(when)}</td>
       <td class="audit-action">${auditEsc(row.action||'–')}</td>
       <td>${auditEsc(source)}</td>
@@ -314,9 +337,27 @@ function renderAudit(rows){
       <td>${auditEsc(row.record_id||'–')}</td>
       <td><span class="audit-status ${status==='error'?'error':'success'}">${auditEsc(status||'–')}</span></td>
       <td>${auditEsc(row.request_id||'–')}</td>
-      <td class="audit-detail">${auditEsc(detail)}</td>
+      <td><button type="button" class="audit-toggle" aria-expanded="false" aria-controls="${detailId}" data-audit-toggle="${detailId}">Details</button></td>
+    </tr>
+    <tr id="${detailId}" class="audit-detail-row" hidden>
+      <td colspan="8">
+        <div class="audit-detail-panel">
+          ${detailCards.map(([label,value])=>`<div class="audit-detail-card"><span class="audit-detail-label">${auditEsc(label)}</span><pre class="audit-detail-value">${auditEsc(value)}</pre></div>`).join('')}
+        </div>
+      </td>
     </tr>`;
   }).join('');
+
+  el.querySelectorAll('[data-audit-toggle]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const id=button.getAttribute('data-audit-toggle');
+      const panel=document.getElementById(id);
+      if(!panel)return;
+      const open=panel.hidden;
+      panel.hidden=!open;
+      button.setAttribute('aria-expanded',String(open));
+    });
+  });
 }
 async function loadAudit(){
   const messageEl=document.getElementById('auditMessage');
