@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Klaro KI – Knowledge Write Test</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:680px;margin:40px auto;padding:20px}
+input,textarea,button{width:100%;box-sizing:border-box;margin:8px 0;padding:12px;font-size:16px}
+textarea{min-height:140px}button{cursor:pointer}
+#result{white-space:pre-wrap;background:#f4f4f4;padding:12px;border-radius:8px;margin-top:16px}
+</style>
+</head>
+<body>
+<h1>Knowledge Write Test</h1>
+<p>Nur für den technischen Test. Die bestehende Anwendung wird nicht verändert.</p>
+<input id="question" value="SCHRITT-10C-TEST">
+<textarea id="answer">Dies ist ein kontrollierter Backend-Schreibtest für Klaro KI.</textarea>
+<input id="source" value="step-10c-backend-test">
+<button id="send">Test schreiben</button>
+<div id="result">Noch kein Test ausgeführt.</div>
+<script>
+document.getElementById('send').addEventListener('click', async () => {
+  const result = document.getElementById('result');
+  result.textContent = 'Sende Test …';
+  try {
+    const response = await fetch('/api/knowledge-write', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        question: document.getElementById('question').value,
+        answer: document.getElementById('answer').value,
+        source: document.getElementById('source').value
+      })
+    });
+    const text = await response.text();
+    result.textContent = 'HTTP ' + response.status + '\n\n' + text;
+  } catch (error) {
+    result.textContent = 'Fehler:\n' + String(error);
+  }
+});
+</script>
+</body>
+</html>
