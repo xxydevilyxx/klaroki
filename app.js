@@ -48,14 +48,15 @@
   }
 
   async function geminiResearch(query, knowledge) {
-    const r = await fetch("/api/ai", {
+    const r = await fetch("/api/web-search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         query,
-        knowledge
+        knowledge,
+        mode: "gemini"
       })
     });
 
