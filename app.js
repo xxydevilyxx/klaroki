@@ -122,7 +122,83 @@
 
   function isForecastQuestion(query) {
     const q = cleanWebText(query).toLowerCase();
-    return /\b(wird|bleibt|übersteht|überstehen|schafft|gewinnt|verliert|kommt|tritt.*zurück|tritt.*zurueck|bis.*bleiben|noch.*jahr|dieses jahr|nächstes jahr|naechstes jahr|zukunft|prognose|wahrscheinlichkeit|wahrscheinlich)\b/.test(q);
+    return /\b(wird|bleibt|übersteht|überstehen|schafft|gewinnt|verliert|kommt|tritt.*zurück|tritt.*zurueck|bis.*bleiben|noch.*jahr|dieses jahr|nächstes jahr|naechstes jahr|zukunft|prognose|wahrscheinlichkeit|wahrscheinlich|was passiert wenn|was passiert falls|wenn .* an die macht|falls .* an die macht)\b/.test(q);
+  }
+
+  function isPoliticalQuestion(query) {
+    return /\b(afd|spd|cdu|csu|fdp|grüne|gruene|linke|partei|bundestag|bundesregierung|bundesrat|kanzler|minister|wahl|koalition|gesetz|politik|politisch)\b/i.test(cleanWebText(query));
+  }
+
+  const TOPIC_SIGNALS = [
+    ['Wirtschaft', /wirtschaft|unternehmen|steuern|haushalt|finanz|arbeit|industrie|energiepreis|wirtschaftspolit/i],
+    ['Energie & Klima', /klima|energie|strom|gas|heizung|emission|koh|windkraft|erneuerbar/i],
+    ['Migration & Asyl', /migration|migrat|asyl|grenze|abschieb|einwander|flücht|fluecht/i],
+    ['Europa & EU', /europa|\beu\b|euro|brüssel|bruessel|europä|europae/i],
+    ['Innenpolitik & Demokratie', /demokr|innenpolitik|verfassung|verfassungs|staat|gericht|bundesverfass|institution/i],
+    ['Soziales', /rente|sozial|bürgergeld|buergergeld|gesundheit|pflege|familie|wohnen|miete/i],
+    ['Außenpolitik', /ukraine|russland|nato|außenpolitik|aussenpolitik|krieg|verteidigung|bundeswehr/i]
+  ];
+
+  function extractSentences(text) {
+    return cleanWebText(text)
+      .split(/(?<=[.!?])\s+/)
+      .map(s => s.trim())
+      .filter(s => s.length >= 45 && s.length <= 420);
+  }
+
+  function topicCoverage(items) {
+    return TOPIC_SIGNALS.map(([name, pattern]) => {
+      const sources = items.filter(item => pattern.test(`${item.title} ${item.summary}`));
+      return { name, count: sources.length };
+    }).filter(x => x.count > 0).sort((a,b) => b.count - a.count);
+  }
+
+  function buildKlaroAssessment(query, webItems, knowledgeText) {
+    if (!webItems.length) return '';
+
+    const political = isPoliticalQuestion(query);
+    const forecast = isForecastQuestion(query);
+    if (!political && !forecast) return '';
+
+    const topics = topicCoverage(webItems);
+    const topicText = topics.slice(0, 4).map(t => `${t.name} (${t.count} Quelle${t.count === 1 ? '' : 'n'})`).join(', ');
+
+    const sentences = [];
+    const seen = new Set();
+    const queryTerms = tokenize(query).filter(t => t.length >= 5);
+    const rankedItems = webItems.map(item => {
+      const text = `${item.title} ${item.summary}`.toLowerCase();
+      let score = 0;
+      queryTerms.forEach(term => { if (text.includes(term)) score += 2; });
+      TOPIC_SIGNALS.forEach(([, pattern]) => { if (pattern.test(text)) score += 1; });
+      if (item.summary) score += 1;
+      return { item, score };
+    }).sort((a,b) => b.score - a.score);
+
+    for (const { item } of rankedItems) {
+      for (const sentence of extractSentences(item.summary || item.title)) {
+        const key = sentence.toLowerCase().replace(/[^a-z0-9äöüß]/gi, '').slice(0, 180);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        sentences.push(sentence);
+        if (sentences.length >= 4) break;
+      }
+      if (sentences.length >= 4) break;
+    }
+
+    if (forecast) {
+      let assessment = '**Klaro KI Einordnung:** Aus der Gesamtschau der recherchierten Quellen ergibt sich kein sicherer Zukunftsausgang, aber sehr wohl ein belastbares Bild der Themen, die bei der angenommenen Entwicklung relevant wären.';
+      if (topicText) assessment += ` In den ausgewerteten Quellen konzentrieren sich die konkreten Aussagen vor allem auf ${topicText}.`;
+      if (sentences.length) assessment += ` Die wiederkehrenden Aussagen stützen dabei insbesondere folgende Punkte: ${sentences.slice(0, 3).join(' ')}`;
+      assessment += ' Das ist eine aus den Quellen abgeleitete Einordnung von Klaro KI und keine Vorhersage. Ob und in welchem Umfang sich daraus politische Veränderungen ergeben würden, hängt zusätzlich von Mehrheiten, Gesetzen, Gerichten und anderen institutionellen Voraussetzungen ab.';
+      return assessment;
+    }
+
+    let assessment = '**Klaro KI Einordnung:** Die Recherche spricht nicht für eine bloße Einzelmeldung, sondern zeigt mehrere zusammenhängende Aspekte der Frage.';
+    if (topicText) assessment += ` Besonders stark vertreten sind ${topicText}.`;
+    if (sentences.length) assessment += ` Aus diesen Quellen ergibt sich als gemeinsame Linie: ${sentences.slice(0, 3).join(' ')}`;
+    if (knowledgeText.length) assessment += ' Die Wissensbasis ergänzt diese Recherche, wurde aber gegenüber den aktuellen Webquellen nachrangig behandelt.';
+    return assessment;
   }
 
   function buildSourceList(web) {
@@ -156,14 +232,15 @@
     const dateValues=webItems.map(r=>Date.parse(r.date)).filter(Number.isFinite).sort((a,b)=>b-a);
     const newest=dateValues.length?new Date(dateValues[0]).toLocaleDateString('de-DE'):null;
     const sources=buildSourceList(webItems);
+    const assessment = buildKlaroAssessment(cleanQuery, webItems, knowledgeText);
 
     if (isForecastQuestion(cleanQuery)) {
       const evidence = webItems.slice(0, 5).map(r => r.summary && r.title && !r.summary.startsWith(r.title) ? `${r.title}: ${r.summary}` : (r.summary || r.title)).join(" ");
-      let reply = `**Kurz gesagt:** Die Frage betrifft eine zukünftige Entwicklung. Die aktuelle Recherche kann den belegten Stand und relevante Voraussetzungen zeigen, aber keinen sicheren Ausgang vorhersagen.`;
+      let reply = `**Kurz gesagt:** Die Frage beschreibt ein mögliches zukünftiges Szenario. Die Recherche kann zeigen, welche dokumentierten Positionen, Entwicklungen und Voraussetzungen dafür relevant sind, aber keinen sicheren Ausgang vorhersagen.`;
       if (evidence) reply += `\n\n**Was die aktuelle Recherche zeigt:** ${evidence}`;
+      if (assessment) reply += `\n\n${assessment}`;
       if (knowledgeText.length) reply += `\n\n**Wissensbasis:** ${knowledgeText.slice(0, 3).join(" ")}`;
-      reply += `\n\n**Einordnung:** Die Recherche wurde aus mehreren Suchrichtungen zusammengeführt und doppelte Treffer entfernt. ${newest ? `Der jüngste gefundene Veröffentlichungszeitpunkt ist ${newest}.` : ''}`;
-      reply += `\n\n**Fazit:** Aus den vorliegenden Quellen lässt sich kein sicherer zukünftiger Ausgang ableiten.`;
+      reply += `\n\n**Fazit:** Die Einordnung basiert auf der Gesamtschau der gefundenen Quellen. ${newest ? `Der jüngste gefundene Veröffentlichungszeitpunkt ist ${newest}.` : ''}`;
       if (sources) reply += `\n\n**Ausgewertete Quellen:**\n${sources}`;
       return reply;
     }
@@ -177,6 +254,7 @@
     const sections=[];
     sections.push(`**Recherche-Ergebnis:** Zu „${cleanQuery}“ wurden ${webItems.length} relevante Veröffentlichungen zusammengeführt. ${matchedTerms.length ? `Die Suchtreffer decken ${matchedTerms.length} zentrale Begriffe der Frage ab.` : ''}`);
     if(findings.length) sections.push(`**Wesentliche Befunde:** ${findings.join(" ")}`);
+    if(assessment) sections.push(assessment);
     if(knowledgeText.length) sections.push(`**Ergänzung aus der Wissensbasis:** ${knowledgeText.slice(0,3).join(" ")}`);
     if(sources) sections.push(`**Quellen:**\n${sources}`);
     return sections.join("\n\n");

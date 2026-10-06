@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b4ca8">
 <title>Klaro KI – Admin</title>
 <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
@@ -83,17 +83,51 @@
 <!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.3) -->
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eaf7ff;background:#06152f}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:32px 18px 48px;background:radial-gradient(circle at 50% 10%,rgba(18,105,211,.22),transparent 42%),#06152f}.page{width:min(920px,100%);margin:0 auto}
+*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{margin:0;min-height:100vh;padding:32px 18px 48px;background:radial-gradient(circle at 50% 10%,rgba(18,105,211,.22),transparent 42%),#06152f}.page{width:min(920px,100%);margin:0 auto}
 .card{width:min(420px,100%);margin:7vh auto 0;padding:28px;border:1px solid rgba(118,199,255,.25);border-radius:20px;background:rgba(5,20,48,.96);box-shadow:0 20px 70px rgba(0,0,0,.4)}.brand{font-weight:900;letter-spacing:.04em;font-size:22px}.brand span{color:#56b8ff}.eyebrow{margin:8px 0 24px;color:#8ea9bf;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-label{display:block;margin:0 0 7px;color:#bcd4e5;font-size:12px;font-weight:700}input{width:100%;padding:12px 13px;margin:0 0 16px;border:1px solid rgba(118,199,255,.25);border-radius:10px;background:#081c3c;color:#fff;outline:none}input:focus{border-color:#56b8ff}button{font:inherit}.primary{width:100%;padding:12px;border:0;border-radius:10px;background:#1269d3;color:#fff;font-weight:800;cursor:pointer}.primary:hover{filter:brightness(1.08)}#message{min-height:20px;margin:14px 0 0;color:#ffb9c0;font-size:12px}a{color:#8fcfff;font-size:12px;text-decoration:none}.back-link{display:block;margin-top:18px;text-align:center}.hidden{display:none!important}
+label{display:block;margin:0 0 7px;color:#bcd4e5;font-size:12px;font-weight:700}input{width:100%;padding:12px 13px;margin:0 0 16px;font-size:16px;line-height:1.25;border:1px solid rgba(118,199,255,.25);border-radius:10px;background:#081c3c;color:#fff;outline:none}input:focus{border-color:#56b8ff}button{font:inherit}.primary{width:100%;padding:12px;font-size:16px;line-height:1.25;border:0;border-radius:10px;background:#1269d3;color:#fff;font-weight:800;cursor:pointer}.primary:hover{filter:brightness(1.08)}#message{min-height:20px;margin:14px 0 0;color:#ffb9c0;font-size:12px}a{color:#8fcfff;font-size:12px;text-decoration:none}.back-link{display:block;margin-top:18px;text-align:center}.hidden{display:none!important}
 .admin-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 20px}.admin-header .brand{font-size:24px}.admin-subtitle{margin:5px 0 0;color:#8ea9bf;font-size:12px}.logout{border:1px solid rgba(118,199,255,.28);border-radius:10px;background:rgba(5,20,48,.9);color:#8fcfff;padding:9px 13px;font-size:12px;font-weight:800;cursor:pointer}.logout:hover{filter:brightness(1.12)}.admin-welcome{margin-bottom:18px;padding:16px;border:1px solid rgba(118,199,255,.18);border-radius:14px;background:rgba(255,255,255,.035)}.admin-welcome strong{display:block;font-size:14px}.admin-welcome span{display:block;margin-top:4px;color:#8ea9bf;font-size:11px}
 .klaro-status-panel{width:100%;padding:18px;border:1px solid rgba(118,199,255,.25);border-radius:18px;background:rgba(5,20,48,.97);color:#eaf7ff;box-shadow:0 18px 55px rgba(0,0,0,.38);backdrop-filter:blur(14px)}.klaro-status-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.klaro-status-head strong{font-size:15px}.klaro-status-refresh{border:0;background:transparent;color:#a9c9df;font-size:20px;cursor:pointer}.klaro-status-note{margin:5px 0 14px;color:#8ea9bf;font-size:11px;line-height:1.4}.klaro-status-list{display:flex;flex-direction:column;gap:7px}.klaro-status-item{display:grid;grid-template-columns:10px 1fr auto;gap:9px;align-items:center;padding:10px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06)}.klaro-status-item strong{display:block;font-size:12px}.klaro-status-item small{display:block;margin-top:2px;color:#8ea9bf;font-size:10px}.klaro-status-item b{font-size:9px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;letter-spacing:.04em;color:#9eb5c8;text-align:right}.status-dot{display:block;width:8px;height:8px;border-radius:50%;background:#73849a;box-shadow:0 0 7px transparent}.status-ok .status-dot{background:#53e6a0;box-shadow:0 0 8px rgba(83,230,160,.65)}.status-warn .status-dot{background:#ffd36b;box-shadow:0 0 8px rgba(255,211,107,.55)}.status-error .status-dot{background:#ff6f7d;box-shadow:0 0 8px rgba(255,111,125,.55)}.status-ok b{color:#6ee7b7}.status-warn b{color:#ffd36b}.status-error b{color:#ff8d99}.klaro-status-overall{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:11px}.klaro-status-overall.status-ok{color:#6ee7b7}.klaro-status-overall.status-warn{color:#ffd36b}.klaro-status-overall.status-error{color:#ff8d99}
-.admin-footer{margin-top:34px;padding:20px 0 0;border-top:1px solid rgba(118,199,255,.14);text-align:center;color:#8ea9bf}.admin-footer nav{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:10px}.admin-footer nav a{font-size:12px}.admin-copyright{font-size:11px;opacity:.55}.status-below-footer{margin-top:22px}.status-below-footer .status-label{margin:0 0 8px;color:#6f91aa;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.status-below-footer{margin-top:22px}.status-below-footer .status-label{margin:0 0 8px;color:#6f91aa;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
 @media(max-width:700px){body{padding:22px 12px 36px}.card{margin-top:4vh;padding:24px}.admin-header{align-items:flex-start}.admin-header .brand{font-size:21px}.logout{padding:8px 10px}.klaro-status-panel{padding:14px}.klaro-status-item{grid-template-columns:10px 1fr}.klaro-status-item b{grid-column:2;text-align:left;margin-top:-3px}}
 
 .admin-analytics{margin-top:28px}.admin-analytics-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:14px}.admin-analytics-head h2{margin:2px 0 5px;font-size:19px}.admin-analytics-note{margin:0;color:#8ea9bf;font-size:11px;line-height:1.5;max-width:640px}.admin-analytics-actions{display:flex;gap:8px;align-items:center}.admin-analytics-actions select,.admin-analytics-actions button{border:1px solid rgba(118,199,255,.25);border-radius:9px;background:#081c3c;color:#dff3ff;padding:9px 11px;font-size:11px;font-weight:700}.admin-analytics-actions button{cursor:pointer}.analytics-message{margin:0 0 14px;padding:12px;border:1px solid rgba(118,199,255,.16);border-radius:10px;background:rgba(255,255,255,.035);color:#8ea9bf;font-size:11px}.analytics-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.analytics-kpis article{padding:14px;border:1px solid rgba(118,199,255,.16);border-radius:13px;background:rgba(5,20,48,.82)}.analytics-kpis span{display:block;color:#8ea9bf;font-size:10px;text-transform:uppercase;letter-spacing:.08em}.analytics-kpis strong{display:block;margin-top:6px;font-size:22px}.analytics-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.analytics-box{padding:15px;border:1px solid rgba(118,199,255,.16);border-radius:14px;background:rgba(5,20,48,.82)}.analytics-box h3{margin:0 0 12px;font-size:12px}.analytics-list{display:flex;flex-direction:column;gap:7px}.analytics-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 9px;border-radius:8px;background:rgba(255,255,255,.035)}.analytics-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c6d9e7;font-size:10px}.analytics-row b{font-size:10px;color:#6ee7b7}.analytics-daily{margin-top:12px}.analytics-daily-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.analytics-day{padding:10px;border-radius:9px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05)}.analytics-day strong{display:block;font-size:11px}.analytics-day small{display:block;margin-top:4px;color:#8ea9bf;font-size:9px;line-height:1.5}
 @media(max-width:700px){.admin-analytics-head{align-items:flex-start;flex-direction:column}.admin-analytics-actions{width:100%}.admin-analytics-actions select,.admin-analytics-actions button{flex:1}.analytics-grid,.analytics-columns{grid-template-columns:1fr}.analytics-kpis article{padding:12px}}
 
+/* Admin Dashboard redesign */
+body{background:radial-gradient(circle at 15% 0%,rgba(20,105,210,.20),transparent 32%),radial-gradient(circle at 90% 12%,rgba(64,190,255,.10),transparent 28%),#050f24}
+.page{width:min(1220px,100%)}
+.admin-topbar{display:flex;justify-content:space-between;align-items:center;gap:24px;margin:0 0 18px;padding:18px 20px;border:1px solid rgba(118,199,255,.18);border-radius:22px;background:linear-gradient(135deg,rgba(8,29,65,.94),rgba(5,18,43,.92));box-shadow:0 18px 55px rgba(0,0,0,.24)}
+.admin-brand-wrap{display:flex;align-items:center;gap:16px}.admin-brand-wrap>.brand{font-size:26px;min-width:82px}.admin-kicker,.section-eyebrow{margin:0 0 5px;color:#69c5ff;font-size:9px;font-weight:900;letter-spacing:.16em}.admin-topbar h1{margin:0;font-size:22px}.admin-subtitle{margin:4px 0 0;color:#8ea9bf;font-size:11px}.admin-top-actions{display:flex;align-items:center;gap:9px}.session-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid rgba(83,230,160,.18);border-radius:999px;background:rgba(83,230,160,.06);color:#9fe8c5;font-size:10px;font-weight:800}.session-pill i{width:7px;height:7px;border-radius:50%;background:#53e6a0;box-shadow:0 0 8px rgba(83,230,160,.7)}
+.admin-nav{position:sticky;top:10px;z-index:20;display:flex;gap:6px;overflow:auto;margin:0 0 16px;padding:6px;border:1px solid rgba(118,199,255,.14);border-radius:14px;background:rgba(5,18,43,.88);backdrop-filter:blur(16px)}.admin-nav a{flex:0 0 auto;padding:8px 11px;border-radius:9px;color:#9fb9ca;font-size:10px;font-weight:800;text-decoration:none}.admin-nav a:hover{background:rgba(86,184,255,.10);color:#eaf7ff}
+.admin-hero-panel{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:12px;padding:22px;border:1px solid rgba(118,199,255,.17);border-radius:20px;background:linear-gradient(120deg,rgba(11,52,104,.72),rgba(6,24,55,.90))}.admin-hero-panel h2{margin:0 0 7px;font-size:25px}.admin-hero-panel p{margin:0;max-width:760px;color:#9db6c9;font-size:12px;line-height:1.55}.hero-meta{min-width:150px;text-align:right}.hero-meta span{display:block;color:#e8f7ff;font-size:18px;font-weight:900}.hero-meta small{display:block;margin-top:4px;color:#7795aa;font-size:9px}
+.dashboard-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px}.dashboard-kpi{min-height:105px;padding:15px;border:1px solid rgba(118,199,255,.14);border-radius:15px;background:rgba(6,23,52,.88)}.dashboard-kpi.accent{border-color:rgba(86,184,255,.35);background:linear-gradient(145deg,rgba(18,105,211,.20),rgba(6,23,52,.92))}.dashboard-kpi span,.insight-card span{display:block;color:#86a3b7;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.dashboard-kpi strong{display:block;margin:9px 0 3px;font-size:25px}.dashboard-kpi small,.insight-card small{color:#718ea3;font-size:9px}
+.admin-section{margin-top:14px}.section-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:10px}.section-heading h2{margin:0;font-size:19px}.section-heading p{margin:4px 0 0;color:#819caf;font-size:10px}.icon-action{width:34px;height:34px;border:1px solid rgba(118,199,255,.20);border-radius:10px;background:#081c3c;color:#bfe7ff;font-size:17px;cursor:pointer}.system-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.status-card{display:grid;grid-template-columns:9px 1fr auto;gap:9px;align-items:center;padding:13px;border:1px solid rgba(118,199,255,.13);border-radius:12px;background:rgba(6,23,52,.86)}.status-card strong{display:block;font-size:11px}.status-card small{display:block;margin-top:3px;color:#718ea3;font-size:9px}.status-card b{font-size:9px}.system-overall{display:flex;align-items:center;gap:8px;margin-top:9px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.035);color:#8ea9bf;font-size:10px}.status-ok .status-dot{background:#53e6a0;box-shadow:0 0 8px rgba(83,230,160,.65)}.status-warn .status-dot{background:#ffd36b;box-shadow:0 0 8px rgba(255,211,107,.55)}.status-error .status-dot{background:#ff6f7d;box-shadow:0 0 8px rgba(255,111,125,.55)}.status-ok b,.system-overall.status-ok{color:#6ee7b7}.status-warn b,.system-overall.status-warn{color:#ffd36b}.status-error b,.system-overall.status-error{color:#ff8d99}.status-card.status-ok,.status-card.status-warn,.status-card.status-error{color:inherit}.status-dot{display:block;width:8px;height:8px;border-radius:50%;background:#718196}
+.analytics-heading{margin-top:4px}.admin-analytics-actions{display:flex;gap:7px}.admin-analytics-actions select,.admin-analytics-actions button{border:1px solid rgba(118,199,255,.20);border-radius:9px;background:#081c3c;color:#dff3ff;padding:9px 10px;font-size:10px;font-weight:800}.admin-analytics-actions button{cursor:pointer}.analytics-message{margin:0 0 10px;padding:10px 12px;border:1px solid rgba(118,199,255,.14);border-radius:10px;background:rgba(255,255,255,.035);color:#8ea9bf;font-size:10px}.insight-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:10px}.insight-card{padding:14px;border:1px solid rgba(118,199,255,.13);border-radius:13px;background:rgba(6,23,52,.86)}.insight-card strong{display:block;margin:7px 0 3px;font-size:20px}.analytics-main-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:10px}.analytics-box{padding:15px;border:1px solid rgba(118,199,255,.13);border-radius:15px;background:rgba(6,23,52,.86);margin-bottom:10px}.box-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}.box-heading h3{margin:0;font-size:12px}.box-heading p{margin:4px 0 0;color:#718ea3;font-size:9px;line-height:1.45}.legend{display:flex;align-items:center;gap:5px;color:#8ea9bf;font-size:9px}.legend i{display:block;width:7px;height:7px;border-radius:50%;background:#56b8ff}.trend-chart{height:205px;display:flex;align-items:flex-end;gap:4px;padding:12px 4px 0;border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden}.trend-bar{position:relative;flex:1;min-width:5px;max-width:20px;height:var(--h);border-radius:5px 5px 1px 1px;background:linear-gradient(180deg,#56b8ff,rgba(18,105,211,.35));opacity:.9}.trend-bar span{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);color:#5f7d92;font-size:7px;white-space:nowrap}.trend-empty{align-self:center;width:100%;text-align:center;color:#6f8ca1;font-size:10px}.insights-list{display:flex;flex-direction:column;gap:7px}.insight-row{display:grid;grid-template-columns:24px 1fr auto;gap:9px;align-items:center;padding:9px;border-radius:9px;background:rgba(255,255,255,.035)}.insight-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:8px;background:rgba(86,184,255,.10);color:#70c8ff;font-size:11px}.insight-row strong{display:block;font-size:10px}.insight-row small{display:block;margin-top:2px;color:#718ea3;font-size:8px}.insight-row b{font-size:10px;color:#bfe7ff}.analytics-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.compact-columns{grid-template-columns:repeat(4,minmax(0,1fr))}.compact-columns section{min-width:0}.analytics-columns h4{margin:0 0 8px;color:#a9c3d3;font-size:10px}.analytics-list{display:flex;flex-direction:column;gap:5px}.analytics-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;background:rgba(255,255,255,.035)}.analytics-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c6d9e7;font-size:9px}.analytics-row b{font-size:9px;color:#6ee7b7}.analytics-daily-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;max-height:300px;overflow:auto}.analytics-day{padding:7px;border-radius:7px;background:rgba(255,255,255,.035)}.analytics-day strong{display:block;font-size:9px}.analytics-day small{display:block;margin-top:3px;color:#718ea3;font-size:8px;line-height:1.45}
+@media(max-width:900px){.dashboard-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.system-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.compact-columns{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-main-grid{grid-template-columns:1fr}.insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){body{padding:14px 10px 28px}.admin-topbar{align-items:flex-start;flex-direction:column;padding:15px}.admin-brand-wrap{align-items:flex-start}.admin-top-actions{width:100%;justify-content:space-between}.admin-nav{top:6px}.admin-hero-panel{align-items:flex-start;flex-direction:column;padding:16px}.admin-hero-panel h2{font-size:21px}.hero-meta{width:100%;text-align:left}.dashboard-kpis,.system-grid,.insight-grid,.analytics-columns,.compact-columns{grid-template-columns:1fr}.section-heading{align-items:flex-start;flex-direction:column}.analytics-heading{align-items:stretch}.admin-analytics-actions{width:100%}.admin-analytics-actions select,.admin-analytics-actions button{flex:1}.trend-chart{height:170px}}
+
+  .audit-content{margin-top:10px}
+  .audit-table-wrap{overflow:auto;border:1px solid rgba(118,199,255,.16);border-radius:13px;background:rgba(5,20,48,.82)}
+  .audit-table{width:100%;border-collapse:collapse;min-width:980px;font-size:10px}
+  .audit-table th{padding:10px 9px;text-align:left;color:#8ea9bf;font-size:9px;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid rgba(118,199,255,.14);white-space:nowrap}
+  .audit-table td{padding:9px;border-bottom:1px solid rgba(118,199,255,.08);color:#dff3ff;vertical-align:top}
+  .audit-table tr:last-child td{border-bottom:0}
+  .audit-status{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;font-weight:800;font-size:9px}
+  .audit-status.success{color:#6ff0bd;background:rgba(55,220,150,.10)}
+  .audit-status.error{color:#ffb4a8;background:rgba(255,90,80,.10)}
+  .audit-detail{max-width:330px;white-space:pre-wrap;word-break:break-word;color:#8ea9bf}
+  .audit-empty{padding:18px;color:#8ea9bf;text-align:center}
+  .audit-action{font-weight:800;color:#dff3ff}
+  @media(max-width:760px){.audit-table{min-width:900px}.audit-detail{max-width:260px}.audit-toggle{appearance:none;border:0;background:transparent;color:#dff3ff;font:inherit;font-weight:800;cursor:pointer;padding:0;text-align:left}
+.audit-toggle::after{content:'＋';display:inline-block;margin-left:7px;color:#75c8ff;font-weight:700}
+.audit-toggle[aria-expanded="true"]::after{content:'−'}
+.audit-table tr.audit-detail-row td{padding:0;border-bottom:1px solid rgba(118,199,255,.10);background:rgba(3,14,35,.72)}
+.audit-detail-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px}
+.audit-detail-card{border:1px solid rgba(118,199,255,.12);border-radius:10px;padding:10px;background:rgba(8,25,56,.72)}
+.audit-detail-label{display:block;margin-bottom:5px;color:#75c8ff;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.audit-detail-value{margin:0;color:#dff3ff;font-size:10px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
+@media (max-width:700px){.audit-detail-panel{grid-template-columns:1fr}}}
 </style>
 </head>
 <body>
@@ -104,65 +138,220 @@ label{display:block;margin:0 0 7px;color:#bcd4e5;font-size:12px;font-weight:700}
 <a class="back-link" href="index.html">← Zurück zu Klaro KI</a>
 </section>
 <main id="adminView" class="hidden">
-<header class="admin-header"><div><div class="brand">klaro<span>KI</span></div><p class="admin-subtitle">Administrationsbereich</p></div><button id="adminLogout" class="logout" type="button">Abmelden</button></header>
-<div class="admin-welcome"><strong>Admin-Zugang aktiv</strong><span>Nur diese eingeloggte Admin-Sitzung kann den Systemstatus sehen.</span></div>
-</main>
-<footer class="admin-footer"><nav aria-label="Admin-Fußzeile"><a href="index.html">Klaro KI</a><a href="impressum.html">Impressum</a><a href="mailto:dirkpelikan@freenet.de?subject=Klaro%20KI%20Admin">Kontakt</a><a href="#" id="adminPrivacyButton">Datenschutz</a></nav><div class="admin-copyright">© 2026 Klaro KI · Administrationsbereich</div></footer>
-<section id="adminStatus" class="status-below-footer hidden" aria-labelledby="adminStatusTitle">
-<p class="status-label">Nur für Admins</p><div class="klaro-status-panel"><div class="klaro-status-head"><strong id="adminStatusTitle">Klaro KI Systemstatus</strong><button id="klaroStatusRefresh" class="klaro-status-refresh" type="button" aria-label="Status aktualisieren">↻</button></div>
-<p class="klaro-status-note">Live-Prüfung der verfügbaren Dienste.</p><div class="klaro-status-list">
-<div class="klaro-status-item" data-service="klaro"><span class="status-dot"></span><div><strong>Klaro KI</strong><small>Oberfläche &amp; Antwortlogik</small></div><b>Prüfung …</b></div>
-<div class="klaro-status-item" data-service="database"><span class="status-dot"></span><div><strong>Externe Datenbank</strong><small>Supabase / Wissensbasis</small></div><b>Prüfung …</b></div>
-<div class="klaro-status-item" data-service="websearch"><span class="status-dot"></span><div><strong>Webrecherche</strong><small>Vercel /api/web-search</small></div><b>Prüfung …</b></div>
-<div class="klaro-status-item" data-service="stripe"><span class="status-dot"></span><div><strong>Stripe</strong><small>Premium / Zahlungsdienst</small></div><b>Prüfung …</b></div>
-<div class="klaro-status-item" data-service="moneytizer"><span class="status-dot"></span><div><strong>The Moneytizer</strong><small>Werbung / Monetarisierung</small></div><b>Prüfung …</b></div>
-<div class="klaro-status-item" data-service="cmp"><span class="status-dot"></span><div><strong>CMP</strong><small>Consent / TCF 2.3</small></div><b>Prüfung …</b></div></div>
-<div class="klaro-status-overall" id="klaroStatusOverall"><span class="status-dot"></span><strong>Gesamtsystem: Prüfung …</strong></div></div>
-</section>
+  <header class="admin-topbar">
+    <div class="admin-brand-wrap">
+      <div class="brand">klaro<span>KI</span></div>
+      <div>
+        <p class="admin-kicker">CONTROL CENTER</p>
+        <h1>Admin Dashboard</h1>
+        <p class="admin-subtitle">Übersicht über Nutzung, Systemstatus und wichtige Kennzahlen.</p>
+      </div>
+    </div>
+    <div class="admin-top-actions">
+      <span class="session-pill"><i></i> Admin-Sitzung aktiv</span>
+      <button id="adminLogout" class="logout" type="button">Abmelden</button>
+    </div>
+  </header>
 
-<section id="adminAnalytics" class="admin-analytics hidden" aria-labelledby="adminAnalyticsTitle">
-  <div class="admin-analytics-head">
+  <nav class="admin-nav" aria-label="Admin-Navigation">
+    <a href="#dashboardOverview">Übersicht</a>
+    <a href="#adminAnalytics">Analytics</a>
+    <a href="#adminActivity">Aktivitäten</a>
+    <a href="#adminTechnology">Technik</a>
+    <a href="#adminAudience">Nutzung</a>
+    <a href="#adminSources">Quellen</a>
+  </nav>
+
+  <section id="dashboardOverview" class="admin-hero-panel">
     <div>
-      <p class="status-label">Nur für Admins</p>
-      <h2 id="adminAnalyticsTitle">Besucher &amp; Nutzung</h2>
-      <p class="admin-analytics-note">Anonyme Nutzungsstatistik für den gewählten Zeitraum. Erfasst werden nur Messdaten nach entsprechender CMP-Einwilligung.</p>
+      <span class="section-eyebrow">KLARO KI / LIVE</span>
+      <h2>Was passiert gerade auf deiner Plattform?</h2>
+      <p>Alle Werte stammen aus den vorhandenen Analytics-Daten. Der Zeitraum kann jederzeit zwischen 7, 30, 90 und 365 Tagen gewechselt werden.</p>
     </div>
-    <div class="admin-analytics-actions"><select id="analyticsPeriod" aria-label="Zeitraum"><option value="7">7 Tage</option><option value="30" selected>30 Tage</option><option value="90">90 Tage</option><option value="365">365 Tage</option></select><button id="analyticsRefresh" type="button">↻ Aktualisieren</button></div>
-  </div>
-  <div id="analyticsMessage" class="analytics-message">Statistik wird geladen …</div>
-  <div id="analyticsContent" class="hidden">
-    <div class="analytics-grid analytics-kpis">
-      <article><span>Besucher</span><strong id="statVisitors">–</strong></article>
-      <article><span>Sitzungen</span><strong id="statSessions">–</strong></article>
-      <article><span>Seitenaufrufe</span><strong id="statPageViews">–</strong></article>
-      <article><span>KI-Interaktionen</span><strong id="statAi">–</strong></article>
-      <article><span>KI erfolgreich</span><strong id="statAiSuccess">–</strong></article>
-      <article><span>KI-Fehler</span><strong id="statAiErrors">–</strong></article>
-      <article><span>Ø Besuchsdauer</span><strong id="statAvgDuration">–</strong></article>
-      <article><span>Gesamte Besuchszeit</span><strong id="statTotalDuration">–</strong></article>
-      <article><span>Ø KI-Dauer</span><strong id="statAvgAi">–</strong></article>
+    <div class="hero-meta">
+      <span id="dashboardPeriodLabel">30 Tage</span>
+      <small id="dashboardUpdated">Noch nicht geladen</small>
     </div>
-    <div class="analytics-columns">
-      <section class="analytics-box"><h3>Endgeräte</h3><div id="analyticsDevices" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Browser</h3><div id="analyticsBrowsers" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Bildschirmauflösung</h3><div id="analyticsScreens" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Betriebssysteme</h3><div id="analyticsOs" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Sprachen</h3><div id="analyticsLanguages" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Länder</h3><div id="analyticsCountries" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Referrer / Zugriffsquellen</h3><div id="analyticsReferrers" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>Aufgerufene Seiten</h3><div id="analyticsPages" class="analytics-list"></div></section>
-      <section class="analytics-box"><h3>UI-Interaktionen</h3><div id="analyticsInteractions" class="analytics-list"></div></section>
-    </div>
-    <section class="analytics-box analytics-daily"><h3>Tagesverlauf</h3><div id="analyticsDaily" class="analytics-daily-list"></div></section>
-  </div>
-</section>
+  </section>
 
-</div>
+  <section class="dashboard-kpis" aria-label="Wichtige Kennzahlen">
+    <article class="dashboard-kpi accent"><span>Besucher</span><strong id="statVisitors">–</strong><small>eindeutige Besucher</small></article>
+    <article class="dashboard-kpi"><span>Sitzungen</span><strong id="statSessions">–</strong><small>erfasste Sessions</small></article>
+    <article class="dashboard-kpi"><span>KI-Nutzung</span><strong id="statAi">–</strong><small>KI-Interaktionen</small></article>
+    <article class="dashboard-kpi"><span>Seitenaufrufe</span><strong id="statPageViews">–</strong><small>Page Views</small></article>
+    <article class="dashboard-kpi"><span>KI-Erfolgsquote</span><strong id="statAiRate">–</strong><small>erfolgreiche Ergebnisse</small></article>
+    <article class="dashboard-kpi"><span>Ø Besuchsdauer</span><strong id="statAvgDuration">–</strong><small>pro Session</small></article>
+    <article class="dashboard-kpi"><span>Ø KI-Dauer</span><strong id="statAvgAi">–</strong><small>pro KI-Ergebnis</small></article>
+    <article class="dashboard-kpi"><span>Seiten / Session</span><strong id="statPagesPerSession">–</strong><small>durchschnittlich</small></article>
+  </section>
+
+  <section id="adminStatus" class="admin-section hidden" aria-labelledby="adminStatusTitle">
+    <div class="section-heading">
+      <div><span class="section-eyebrow">SYSTEM</span><h2 id="adminStatusTitle">Systemstatus</h2><p>Live-Prüfung der aktuell erreichbaren Dienste.</p></div>
+      <button id="klaroStatusRefresh" class="icon-action" type="button" aria-label="Status aktualisieren">↻</button>
+    </div>
+    <div class="system-grid">
+      <div class="klaro-status-item status-card" data-service="klaro"><span class="status-dot"></span><div><strong>Klaro KI</strong><small>Oberfläche &amp; Antwortlogik</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="database"><span class="status-dot"></span><div><strong>Supabase</strong><small>Wissensbasis / Datenbank</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="websearch"><span class="status-dot"></span><div><strong>Webrecherche</strong><small>/api/web-search</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="stripe"><span class="status-dot"></span><div><strong>Stripe</strong><small>Premium / Zahlungsdienst</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="moneytizer"><span class="status-dot"></span><div><strong>The Moneytizer</strong><small>Werbung / Monetarisierung</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="cmp"><span class="status-dot"></span><div><strong>CMP</strong><small>Consent / TCF 2.3</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="knowledge-read"><span class="status-dot"></span><div><strong>Wissensbasis READ</strong><small>Lesefunktion / knowledge</small></div><b>Prüfung …</b></div>
+      <div class="klaro-status-item status-card" data-service="knowledge-write"><span class="status-dot"></span><div><strong>Wissensbasis WRITE</strong><small>Schreibfunktion / knowledge</small></div><b>Prüfung …</b></div>
+    </div>
+    <div class="system-overall" id="klaroStatusOverall"><span class="status-dot"></span><strong>Gesamtsystem: Prüfung …</strong></div>
+  </section>
+
+  <section id="adminAnalytics" class="admin-section hidden" aria-labelledby="adminAnalyticsTitle">
+    <div class="section-heading analytics-heading">
+      <div><span class="section-eyebrow">ANALYTICS</span><h2 id="adminAnalyticsTitle">Besucher &amp; Nutzung</h2><p>Anonyme Nutzungsstatistik nach entsprechender CMP-Einwilligung.</p></div>
+      <div class="admin-analytics-actions"><select id="analyticsPeriod" aria-label="Zeitraum"><option value="7">7 Tage</option><option value="30" selected>30 Tage</option><option value="90">90 Tage</option><option value="365">365 Tage</option></select><button id="analyticsRefresh" type="button">↻ Aktualisieren</button></div>
+    </div>
+    <div id="analyticsMessage" class="analytics-message">Statistik wird geladen …</div>
+    <div id="analyticsContent" class="hidden">
+      <div class="insight-grid">
+        <article class="insight-card"><span>KI erfolgreich</span><strong id="statAiSuccess">–</strong><small>positive KI-Ergebnisse</small></article>
+        <article class="insight-card"><span>KI-Fehler</span><strong id="statAiErrors">–</strong><small>fehlgeschlagene Ergebnisse</small></article>
+        <article class="insight-card"><span>Gesamte Besuchszeit</span><strong id="statTotalDuration">–</strong><small>über den gewählten Zeitraum</small></article>
+        <article class="insight-card"><span>Besucher → KI</span><strong id="statAiPerVisitor">–</strong><small>KI-Interaktionen je Besucher</small></article>
+      </div>
+
+      <div class="analytics-main-grid">
+        <section class="analytics-box trend-box"><div class="box-heading"><div><h3>Entwicklung</h3><p>Besucher, KI-Interaktionen und Seitenaufrufe pro Tag.</p></div><span class="legend"><i></i> Besucher</span></div><div id="analyticsTrend" class="trend-chart" aria-label="Tagesverlauf"></div></section>
+        <section class="analytics-box"><div class="box-heading"><div><h3>Schnelle Einblicke</h3><p>Die aktuell wichtigsten Muster im gewählten Zeitraum.</p></div></div><div id="analyticsInsights" class="insights-list"></div></section>
+      </div>
+
+      <section id="adminTechnology" class="analytics-box"><div class="box-heading"><div><span class="section-eyebrow">TECHNIK</span><h3>Technik &amp; Geräte</h3><p>Welche Geräte, Browser, Betriebssysteme und Bildschirmgrößen genutzt werden.</p></div></div><div class="analytics-columns compact-columns">
+        <section><h4>Endgeräte</h4><div id="analyticsDevices" class="analytics-list"></div></section>
+        <section><h4>Browser</h4><div id="analyticsBrowsers" class="analytics-list"></div></section>
+        <section><h4>Betriebssysteme</h4><div id="analyticsOs" class="analytics-list"></div></section>
+        <section><h4>Bildschirmauflösung</h4><div id="analyticsScreens" class="analytics-list"></div></section>
+      </div></section>
+
+      <section id="adminAudience" class="analytics-box"><div class="box-heading"><div><span class="section-eyebrow">PUBLIKUM</span><h3>Nutzerstruktur</h3><p>Länder und Sprachen der erfassten Sessions.</p></div></div><div class="analytics-columns compact-columns">
+        <section><h4>Länder</h4><div id="analyticsCountries" class="analytics-list"></div></section>
+        <section><h4>Sprachen</h4><div id="analyticsLanguages" class="analytics-list"></div></section>
+      </div></section>
+
+      <section id="adminSources" class="analytics-box"><div class="box-heading"><div><span class="section-eyebrow">QUELLEN &amp; INHALTE</span><h3>Herkunft &amp; Nutzung</h3><p>Woher Besucher kommen, welche Seiten sie öffnen und welche UI-Aktionen sie ausführen.</p></div></div><div class="analytics-columns compact-columns">
+        <section><h4>Referrer / Zugriffsquellen</h4><div id="analyticsReferrers" class="analytics-list"></div></section>
+        <section><h4>Aufgerufene Seiten</h4><div id="analyticsPages" class="analytics-list"></div></section>
+        <section><h4>UI-Interaktionen</h4><div id="analyticsInteractions" class="analytics-list"></div></section>
+        <section><h4>Tagesverlauf</h4><div id="analyticsDaily" class="analytics-daily-list"></div></section>
+      </div></section>
+    </div>
+  </section>
+
+  <section id="adminActivity" class="admin-section hidden" aria-labelledby="adminActivityTitle">
+    <div class="section-heading analytics-heading">
+      <div>
+        <span class="section-eyebrow">AUDIT LOG</span>
+        <h2 id="adminActivityTitle">Was schreibt Klaro?</h2>
+        <p>Serverseitig protokollierte Schreibvorgänge: wann, was, woher, wohin und mit welchem Ergebnis.</p>
+      </div>
+      <div class="admin-analytics-actions">
+        <select id="auditStatus" aria-label="Audit-Status">
+          <option value="">Alle Status</option>
+          <option value="success">Erfolgreich</option>
+          <option value="error">Fehler</option>
+        </select>
+        <button id="auditRefresh" type="button">↻ Aktualisieren</button>
+      </div>
+    </div>
+    <div id="auditMessage" class="analytics-message hidden"></div>
+    <div id="auditContent" class="audit-content">
+      <div class="audit-table-wrap">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th>Wann</th>
+              <th>Aktion</th>
+              <th>Quelle</th>
+              <th>Ziel</th>
+              <th>Datensatz</th>
+              <th>Status</th>
+              <th>Request-ID</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="auditRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
 <script>
 const loginView=document.getElementById('loginView'),adminView=document.getElementById('adminView'),adminStatus=document.getElementById('adminStatus'),message=document.getElementById('message');const statusItems=[...document.querySelectorAll('.klaro-status-item')];
 const setStatus=(key,state,label)=>{const el=document.querySelector(`[data-service="${key}"]`);if(!el)return;el.classList.remove('status-ok','status-warn','status-error');el.classList.add('status-'+state);const b=el.querySelector('b');if(b)b.textContent=label;};
 async function waitForCmp(timeout=5000){if(typeof window.__tcfapi==='function')return true;const start=Date.now();while(Date.now()-start<timeout){await new Promise(r=>setTimeout(r,200));if(typeof window.__tcfapi==='function')return true;}return false;}
-async function checkStatus(){statusItems.forEach(el=>{el.classList.remove('status-ok','status-warn','status-error');const b=el.querySelector('b');if(b)b.textContent='Prüfung …';});setStatus('klaro','ok','AKTIV');try{const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{headers:{apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'}});setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');}catch(e){setStatus('database','error','FEHLER');}try{const r=await fetch('/api/web-search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:''})});setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');}catch(e){setStatus('websearch','error','FEHLER');}try{const r=await fetch('/api/service-status');if(r.ok){const d=await r.json();setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');}else throw new Error();}catch(e){setStatus('stripe','warn','SERVER-CHECK FEHLT');setStatus('moneytizer','warn','SERVER-CHECK FEHLT');}const cmpReady=await waitForCmp();setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');const states=statusItems.map(x=>x.classList.contains('status-error')?'error':x.classList.contains('status-warn')?'warn':'ok');const hasError=states.includes('error'),hasWarn=states.includes('warn');const overall=document.getElementById('klaroStatusOverall');overall.classList.remove('status-ok','status-warn','status-error');overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;}
+async function checkStatus(){
+  statusItems.forEach(el=>{
+    el.classList.remove('status-ok','status-warn','status-error');
+    const b=el.querySelector('b');
+    if(b)b.textContent='Prüfung …';
+  });
+
+  setStatus('klaro','ok','AKTIV');
+
+  try{
+    const r=await fetch('https://iiogaaolzzpveefthdxj.supabase.co/rest/v1/knowledge?select=id&limit=1',{
+      headers:{
+        apikey:'sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO',
+        Authorization:'Bearer sb_publishable_iF3lNT3PXdx08jb5e6rjDA_LfuAuBHO'
+      }
+    });
+    setStatus('database',r.ok?'ok':'error',r.ok?'VERBUNDEN':'FEHLER');
+  }catch(e){
+    setStatus('database','error','FEHLER');
+  }
+
+  try{
+    const r=await fetch('/api/web-search',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({query:''})
+    });
+    setStatus('websearch',r.ok?'ok':'error',r.ok?'ERREICHBAR':'FEHLER');
+  }catch(e){
+    setStatus('websearch','error','FEHLER');
+  }
+
+  try{
+    const r=await fetch('/api/service-status');
+    if(r.ok){
+      const d=await r.json();
+      setStatus('stripe',d.stripeConfigured?'ok':'warn',d.stripeConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');
+      setStatus('moneytizer',d.moneytizerConfigured?'ok':'warn',d.moneytizerConfigured?'KONFIGURIERT':'NICHT KONFIGURIERT');
+    }else throw new Error();
+  }catch(e){
+    setStatus('stripe','warn','SERVER-CHECK FEHLT');
+    setStatus('moneytizer','warn','SERVER-CHECK FEHLT');
+  }
+
+  try{
+    const r=await fetch('/api/knowledge-status',{credentials:'same-origin',cache:'no-store'});
+    const d=await r.json();
+    setStatus('knowledge-read',d.read?.ok?'ok':'error',d.read?.label||'FEHLER');
+    setStatus('knowledge-write',d.write?.ok?'ok':'error',d.write?.label||'FEHLER');
+  }catch(e){
+    setStatus('knowledge-read','error','FEHLER');
+    setStatus('knowledge-write','error','FEHLER');
+  }
+
+  const cmpReady=await waitForCmp();
+  setStatus('cmp',cmpReady?'ok':'warn',cmpReady?'AKTIV':'LÄDT / PRÜFEN');
+
+  const states=statusItems.map(x=>
+    x.classList.contains('status-error')?'error':
+    x.classList.contains('status-warn')?'warn':'ok'
+  );
+  const hasError=states.includes('error'),hasWarn=states.includes('warn');
+  const overall=document.getElementById('klaroStatusOverall');
+  overall.classList.remove('status-ok','status-warn','status-error');
+  overall.classList.add('status-'+(hasError?'error':hasWarn?'warn':'ok'));
+  overall.innerHTML=`<span class="status-dot"></span><strong>Gesamtsystem: ${hasError?'FEHLER':hasWarn?'TEILWEISE VERFÜGBAR':'EINWANDFREI'}</strong>`;
+}
 
 const adminAnalytics=document.getElementById('adminAnalytics');
 const analyticsContent=document.getElementById('analyticsContent');
@@ -171,14 +360,97 @@ const analyticsPeriod=document.getElementById('analyticsPeriod');
 const fmtNumber=n=>new Intl.NumberFormat('de-DE').format(Number(n||0));
 const fmtSeconds=s=>{const n=Math.round(Number(s||0));if(n<60)return `${n} Sek.`;const m=Math.floor(n/60),sec=n%60;return `${m} Min. ${sec} Sek.`;};
 function renderAnalyticsList(id,items){const el=document.getElementById(id);if(!el)return;el.innerHTML=(items||[]).slice(0,10).map(x=>`<div class="analytics-row"><span title="${String(x.name||'').replace(/"/g,'&quot;')}">${String(x.name||'Unbekannt')}</span><b>${fmtNumber(x.count)}</b></div>`).join('')||'<div class="analytics-row"><span>Keine Daten</span><b>0</b></div>';}
-function renderAnalytics(data){const s=data.summary||{};document.getElementById('statVisitors').textContent=fmtNumber(s.visitors);document.getElementById('statSessions').textContent=fmtNumber(s.sessions);document.getElementById('statPageViews').textContent=fmtNumber(s.page_views);document.getElementById('statAi').textContent=fmtNumber(s.ai_interactions);document.getElementById('statAiSuccess').textContent=fmtNumber(s.ai_successes);document.getElementById('statAiErrors').textContent=fmtNumber(s.ai_errors);document.getElementById('statAvgDuration').textContent=fmtSeconds(s.avg_session_seconds);document.getElementById('statTotalDuration').textContent=`${Number(s.total_session_minutes||0).toLocaleString('de-DE',{maximumFractionDigits:1})} Min.`;document.getElementById('statAvgAi').textContent=fmtSeconds(s.avg_ai_seconds);renderAnalyticsList('analyticsDevices',data.devices);renderAnalyticsList('analyticsBrowsers',data.browsers);renderAnalyticsList('analyticsScreens',data.screens);renderAnalyticsList('analyticsOs',data.operating_systems);renderAnalyticsList('analyticsLanguages',data.languages);renderAnalyticsList('analyticsCountries',data.countries);renderAnalyticsList('analyticsReferrers',data.referrers);renderAnalyticsList('analyticsPages',data.pages);renderAnalyticsList('analyticsInteractions',data.interaction_types);const daily=document.getElementById('analyticsDaily');daily.innerHTML=(data.daily||[]).slice(-31).map(x=>`<div class="analytics-day"><strong>${x.date}</strong><small>Besucher: ${fmtNumber(x.visitors)}<br>KI: ${fmtNumber(x.ai_interactions)}<br>Aufrufe: ${fmtNumber(x.page_views)}</small></div>`).join('')||'<div class="analytics-day"><strong>Keine Daten</strong></div>';}
+function renderTrend(daily){const el=document.getElementById('analyticsTrend');if(!el)return;const rows=(daily||[]).slice(-30);if(!rows.length){el.innerHTML='<div class="trend-empty">Noch keine Tagesdaten vorhanden.</div>';return;}const max=Math.max(1,...rows.map(x=>Number(x.visitors||0)));el.innerHTML=rows.map(x=>{const value=Number(x.visitors||0);const h=Math.max(4,Math.round((value/max)*100));const label=String(x.date||'').slice(5);return `<div class="trend-bar" style="--h:${h}%" title="${label}: ${fmtNumber(value)} Besucher"><span>${label}</span></div>`;}).join('');}
+function renderInsights(data){const s=data.summary||{}, rows=[];const top=(arr)=>arr&&arr.length?arr[0]:null;const device=top(data.devices),country=top(data.countries),ref=top(data.referrers),page=top(data.pages),interaction=top(data.interaction_types);if(device)rows.push(['◉','Häufigstes Gerät',device.name,fmtNumber(device.count)]);if(country)rows.push(['◎','Top-Land',country.name,fmtNumber(country.count)]);if(ref)rows.push(['↗','Top-Zugriffsquelle',ref.name,fmtNumber(ref.count)]);if(page)rows.push(['▤','Meistbesuchte Seite',page.name,fmtNumber(page.count)]);if(interaction)rows.push(['✦','Häufigste UI-Aktion',interaction.name,fmtNumber(interaction.count)]);if(!rows.length)rows.push(['·','Noch keine Muster','Keine Daten im Zeitraum','0']);document.getElementById('analyticsInsights').innerHTML=rows.map(r=>`<div class="insight-row"><span class="insight-icon">${r[0]}</span><div><strong>${r[1]}</strong><small>${String(r[2]).replace(/</g,'&lt;')}</small></div><b>${r[3]}</b></div>`).join('');}
+function renderAnalytics(data){const s=data.summary||{};const success=Number(s.ai_successes||0),errors=Number(s.ai_errors||0),results=success+errors;const rate=results?Math.round(success/results*100):0;document.getElementById('statVisitors').textContent=fmtNumber(s.visitors);document.getElementById('statSessions').textContent=fmtNumber(s.sessions);document.getElementById('statPageViews').textContent=fmtNumber(s.page_views);document.getElementById('statAi').textContent=fmtNumber(s.ai_interactions);document.getElementById('statAiSuccess').textContent=fmtNumber(success);document.getElementById('statAiErrors').textContent=fmtNumber(errors);document.getElementById('statAiRate').textContent=results?`${rate}%`:'–';document.getElementById('statAvgDuration').textContent=fmtSeconds(s.avg_session_seconds);document.getElementById('statTotalDuration').textContent=`${Number(s.total_session_minutes||0).toLocaleString('de-DE',{maximumFractionDigits:1})} Min.`;document.getElementById('statAvgAi').textContent=fmtSeconds(s.avg_ai_seconds);document.getElementById('statPagesPerSession').textContent=s.sessions?(Number(s.page_views||0)/Number(s.sessions||1)).toLocaleString('de-DE',{maximumFractionDigits:1}):'–';document.getElementById('statAiPerVisitor').textContent=s.visitors?(Number(s.ai_interactions||0)/Number(s.visitors||1)).toLocaleString('de-DE',{maximumFractionDigits:1}):'–';document.getElementById('dashboardPeriodLabel').textContent=`${data.period_days||analyticsPeriod.value} Tage`;document.getElementById('dashboardUpdated').textContent=data.generated_at?`Aktualisiert ${new Date(data.generated_at).toLocaleString('de-DE')}`:'Aktualisiert';renderTrend(data.daily);renderInsights(data);renderAnalyticsList('analyticsDevices',data.devices);renderAnalyticsList('analyticsBrowsers',data.browsers);renderAnalyticsList('analyticsScreens',data.screens);renderAnalyticsList('analyticsOs',data.operating_systems);renderAnalyticsList('analyticsLanguages',data.languages);renderAnalyticsList('analyticsCountries',data.countries);renderAnalyticsList('analyticsReferrers',data.referrers);renderAnalyticsList('analyticsPages',data.pages);renderAnalyticsList('analyticsInteractions',data.interaction_types);const daily=document.getElementById('analyticsDaily');daily.innerHTML=(data.daily||[]).slice(-31).reverse().map(x=>`<div class="analytics-day"><strong>${x.date}</strong><small>Besucher: ${fmtNumber(x.visitors)}<br>KI: ${fmtNumber(x.ai_interactions)}<br>Aufrufe: ${fmtNumber(x.page_views)}</small></div>`).join('')||'<div class="analytics-day"><strong>Keine Daten</strong></div>';}
 async function loadAnalytics(){analyticsMessage.textContent='Statistik wird geladen …';analyticsMessage.classList.remove('hidden');analyticsContent.classList.add('hidden');try{const r=await fetch(`/api/analytics-stats?days=${encodeURIComponent(analyticsPeriod.value)}`,{credentials:'same-origin',cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.error||'Analytics konnten nicht geladen werden.');renderAnalytics(d);analyticsMessage.classList.add('hidden');analyticsContent.classList.remove('hidden');}catch(e){analyticsMessage.textContent=e.message;}}
-function showAdmin(){loginView.classList.add('hidden');adminView.classList.remove('hidden');adminStatus.classList.remove('hidden');adminAnalytics.classList.remove('hidden');checkStatus();loadAnalytics();}
-document.getElementById('analyticsRefresh').addEventListener('click',loadAnalytics);analyticsPeriod.addEventListener('change',loadAnalytics);
+function auditEsc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function auditJson(v){if(v==null)return '';try{return JSON.stringify(v,null,2);}catch(_){return String(v);}}
+function renderAudit(rows){
+  const el=document.getElementById('auditRows');
+  if(!el)return;
+  if(!Array.isArray(rows)||!rows.length){
+    el.innerHTML='<tr><td colspan="8" class="audit-empty">Keine protokollierten Schreibvorgänge vorhanden.</td></tr>';
+    return;
+  }
 
-document.getElementById('adminPrivacyButton').addEventListener('click',async e=>{e.preventDefault();const ready=await waitForCmp();if(ready){window.__tcfapi('displayConsentUi',2,()=>{});}else{alert('Die Datenschutzeinstellungen werden noch geladen. Bitte kurz erneut versuchen.');}});
+  el.innerHTML=rows.map((row,index)=>{
+    const when=row.created_at?new Date(row.created_at).toLocaleString('de-DE'):'–';
+    const source=[row.source_type,row.source_name].filter(Boolean).join(' / ')||'–';
+    const target=[row.source_table,row.record_id?`#${row.record_id}`:''].filter(Boolean).join(' ')||'–';
+    const status=String(row.status||'').toLowerCase();
+    const detailId=`audit-detail-${index}`;
+    const detail=[
+      row.written_data!=null?`GESCHRIEBEN:\n${auditJson(row.written_data)}`:'',
+      row.result_data!=null?`ERGEBNIS:\n${auditJson(row.result_data)}`:'',
+      row.error_message?`FEHLER:\n${row.error_message}`:'',
+      row.metadata!=null?`METADATA:\n${auditJson(row.metadata)}`:'',
+      row.query_text?`QUERY:\n${row.query_text}`:''
+    ].filter(Boolean).join('\n\n')||'–';
+
+    const detailCards=[
+      ['Geschrieben',row.written_data!=null?auditJson(row.written_data):'–'],
+      ['Ergebnis',row.result_data!=null?auditJson(row.result_data):'–'],
+      ['Fehler',row.error_message||'–'],
+      ['Metadaten',row.metadata!=null?auditJson(row.metadata):'–'],
+      ['Query',row.query_text||'–'],
+      ['Request-ID',row.request_id||'–']
+    ];
+
+    return `<tr class="audit-main-row">
+      <td>${auditEsc(when)}</td>
+      <td class="audit-action">${auditEsc(row.action||'–')}</td>
+      <td>${auditEsc(source)}</td>
+      <td>${auditEsc(target)}</td>
+      <td>${auditEsc(row.record_id||'–')}</td>
+      <td><span class="audit-status ${status==='error'?'error':'success'}">${auditEsc(status||'–')}</span></td>
+      <td>${auditEsc(row.request_id||'–')}</td>
+      <td><button type="button" class="audit-toggle" aria-expanded="false" aria-controls="${detailId}" data-audit-toggle="${detailId}">Details</button></td>
+    </tr>
+    <tr id="${detailId}" class="audit-detail-row" hidden>
+      <td colspan="8">
+        <div class="audit-detail-panel">
+          ${detailCards.map(([label,value])=>`<div class="audit-detail-card"><span class="audit-detail-label">${auditEsc(label)}</span><pre class="audit-detail-value">${auditEsc(value)}</pre></div>`).join('')}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.querySelectorAll('[data-audit-toggle]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const id=button.getAttribute('data-audit-toggle');
+      const panel=document.getElementById(id);
+      if(!panel)return;
+      const open=panel.hidden;
+      panel.hidden=!open;
+      button.setAttribute('aria-expanded',String(open));
+    });
+  });
+}
+async function loadAudit(){
+  const messageEl=document.getElementById('auditMessage');
+  const contentEl=document.getElementById('auditContent');
+  const statusEl=document.getElementById('auditStatus');
+  messageEl.textContent='Audit-Log wird geladen …';
+  messageEl.classList.remove('hidden');
+  contentEl.classList.add('hidden');
+  try{
+    const query=statusEl.value?`?status=${encodeURIComponent(statusEl.value)}&limit=100`:'?limit=100';
+    const r=await fetch(`/api/audit-log${query}`,{credentials:'same-origin',cache:'no-store'});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||`Audit-Log konnte nicht geladen werden (HTTP ${r.status}).`);
+    renderAudit(d.rows||[]);
+    messageEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+  }catch(e){
+    messageEl.textContent=e.message;
+  }
+}
+function showAdmin(){loginView.classList.add('hidden');adminView.classList.remove('hidden');adminStatus.classList.remove('hidden');adminAnalytics.classList.remove('hidden');document.getElementById('adminActivity').classList.remove('hidden');checkStatus();loadAnalytics();loadAudit();}
+document.getElementById('analyticsRefresh').addEventListener('click',loadAnalytics);analyticsPeriod.addEventListener('change',loadAnalytics);document.getElementById('auditRefresh').addEventListener('click',loadAudit);document.getElementById('auditStatus').addEventListener('change',loadAudit);
+
 async function checkSession(){try{const r=await fetch('/api/admin-session',{credentials:'same-origin',cache:'no-store'});const d=await r.json();if(d.admin)showAdmin();}catch(_){} }
-document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();message.textContent='';const body={email:document.getElementById('email').value,password:document.getElementById('password').value};try{const r=await fetch('/api/admin-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Login fehlgeschlagen.');showAdmin();}catch(err){message.textContent=err.message;}});
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();message.textContent='';const body={email:document.getElementById('email').value.trim(),password:document.getElementById('password').value};try{const r=await fetch('/api/admin-login',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||`Login fehlgeschlagen (HTTP ${r.status}).`);const session=await fetch('/api/admin-session',{credentials:'same-origin',cache:'no-store'});const sessionData=await session.json().catch(()=>({}));if(!session.ok||!sessionData.admin)throw new Error('Login wurde angenommen, aber die Admin-Sitzung konnte nicht gesetzt werden.');showAdmin();}catch(err){message.textContent=err.message;}});
 document.getElementById('adminLogout').addEventListener('click',async()=>{try{await fetch('/api/admin-logout',{method:'POST',credentials:'same-origin'});}finally{location.href='/';}});document.getElementById('klaroStatusRefresh').addEventListener('click',checkStatus);checkSession();
 </script>
 </body>

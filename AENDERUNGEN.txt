@@ -11,3 +11,4 @@ KI-RECHERCHE V2 – ZERO API COST
 - Bestehende Analytics-, Admin-, CMP- und Stripe-Dateien bleiben unverändert.
 
 Berlin-Abendmotiv im Hero: media/hero-klaro-berlin-abend.jpg (Klaro-KI-Assistent vor Berliner Abendkulisse).
+- Partner-Anfrage: Der Button „Partner werden“ öffnet jetzt eine E-Mail an Dirk Pelikan; die Zieladresse steht nicht mehr als Klartext in der index.html.
