@@ -47,17 +47,17 @@
     }).slice(0,5);
   }
 
-  async function webSearch(query) {
-    // Kostenfreie Recherche-Orchestrierung: mehrere Suchrichtungen parallel, danach serverseitig dedupliziert und priorisiert.
-    const r = await fetch(`/api/research-search`, {
+  async function geminiResearch(query, knowledge) {
+    const r = await fetch("/api/ai", {
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({query, limit:12})
+      body:JSON.stringify({query, knowledge})
     });
     const text=await r.text();
-    let data=null; try{data=text?JSON.parse(text):null}catch{data={raw:text}}
-    if(!r.ok) throw new Error(`Websuche HTTP ${r.status}: ${data?.error || data?.message || text || r.statusText}`);
-    return Array.isArray(data) ? data : (data.results || []);
+    let data=null;
+    try{data=text?JSON.parse(text):null}catch{data={raw:text}}
+    if(!r.ok) throw new Error(`Gemini HTTP ${r.status}: ${data?.error || data?.message || text || r.statusText}`);
+    return data;
   }
 
   function tokenize(text){
@@ -262,21 +262,17 @@
 
 
   async function ask(query) {
-    researchStatus.textContent="RECHERCHE LÄUFT …";
-    researchResults.innerHTML='<div class="research-empty">Wissensbasis und Webquellen werden ausgewertet …</div>';
-    let knowledge=[], web=[], errors=[];
-    try{knowledge=await knowledgeSearch(query)}catch(e){errors.push("Wissensbasis: "+e.message)}
-    try{web=await webSearch(query)}catch(e){errors.push("Websuche: "+e.message)}
+    researchStatus.textContent="GEMINI RECHERCHE LÄUFT …";
+    researchResults.innerHTML='<div class="research-empty">Gemini recherchiert mit Google Search und prüft die Quellenlage …</div>';
 
-    renderResearch(knowledge, web);
-    researchStatus.textContent=errors.length ? "TEILWEISE VERFÜGBAR" : "RECHERCHE ABGESCHLOSSEN";
+    let knowledge=[];
+    try{knowledge=await knowledgeSearch(query)}catch(_){knowledge=[]}
 
-    let reply = buildWebSynthesis(query, knowledge, web);
-    if (!reply) {
-      reply = "Ich konnte zu dieser Frage derzeit keine verwertbaren Informationen aus der Wissensbasis oder der Webrecherche zusammenstellen.";
-    }
-    if (errors.length) reply += "\n\nHinweis: " + errors.join(" · ");
-    return reply;
+    const result=await geminiResearch(query, knowledge);
+    researchStatus.textContent="GEMINI RECHERCHE ABGESCHLOSSEN";
+    researchResults.innerHTML='<div class="research-empty">Die aktuelle Recherche und Quellenprüfung wurden von Gemini durchgeführt und in die Antwort eingearbeitet.</div>';
+
+    return result.answer || "Gemini hat keine Antwort geliefert.";
   }
 
   form.addEventListener("submit",async e=>{
