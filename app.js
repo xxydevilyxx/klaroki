@@ -14,7 +14,7 @@
   const researchStatus = $("#researchStatus");
 
   function esc(value) {
-    return String(value ?? "").replace(/[&<>\"']/g, c => ({
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
       "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
     }[c]));
   }
@@ -47,41 +47,44 @@
     }).slice(0,5);
   }
 
-  async function geminiResearch(query, knowledge) {
-    const r = await fetch("/api/web-search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        query,
-        knowledge,
-        mode: "gemini"
-      })
+  async function webSearch(query) {
+    // Kostenfreie Recherche-Orchestrierung: mehrere Suchrichtungen parallel, danach serverseitig dedupliziert und priorisiert.
+    const r = await fetch(`/api/research-search`, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({query, limit:12})
     });
-
-    const text = await r.text();
-    let data = null;
-
-    try {
-      data = text ? JSON.parse(text) : null;
-    } catch {
-      data = { raw: text };
-    }
-
-    if (!r.ok) {
-      throw new Error(
-        `KI-Recherche HTTP ${r.status}: ` +
-        `${data?.error || data?.message || text || r.statusText}`
-      );
-    }
-
-    if (!data?.answer) {
-      throw new Error("Die KI-Recherche hat keine Antwort geliefert.");
-    }
-
-    return data;
+    const text=await r.text();
+    let data=null; try{data=text?JSON.parse(text):null}catch{data={raw:text}}
+    if(!r.ok) throw new Error(`Websuche HTTP ${r.status}: ${data?.error || data?.message || text || r.statusText}`);
+    return Array.isArray(data) ? data : (data.results || []);
   }
+
+  function tokenize(text){
+    return [...new Set(cleanWebText(text).toLowerCase().replace(/[^a-z0-9äöüß\- ]/gi,' ').split(/\s+/).filter(t=>t.length>=4))];
+  }
+
+  function relevanceScore(query, item){
+    const terms=tokenize(query);
+    const title=cleanWebText(item.title||'').toLowerCase();
+    const body=cleanWebText(item.summary||'').toLowerCase();
+    let score=0;
+    for(const term of terms){
+      if(title.includes(term)) score+=3;
+      else if(body.includes(term)) score+=1;
+    }
+    return score;
+  }
+
+  function uniqueSources(items){
+    const seen=new Set();
+    return items.filter(item=>{
+      const key=(item.url||item.title||'').toLowerCase().replace(/[^a-z0-9äöüß]/gi,'');
+      if(!key||seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+  }
+
 
   function addMessage(text, role, extra="") {
     const row=document.createElement("div");
@@ -97,61 +100,104 @@
     row.append(avatar,content); messages.append(row); messages.scrollTop=messages.scrollHeight;
   }
 
-  function renderResearch(knowledge, aiResult) {
-    const sources = Array.isArray(aiResult?.sources)
-      ? aiResult.sources
-      : [];
+  function renderResearch(knowledge, web) {
+    // Webtreffer werden bewusst NICHT als separate Ergebnisliste angezeigt.
+    // Sie fließen in die formulierte Antwort im Chat ein.
+    researchResults.innerHTML = '<div class="research-empty">Die Recherche wurde in die Antwort von Klaro KI eingearbeitet.</div>';
+  }
 
-    if (!sources.length) {
-      researchResults.innerHTML =
-        '<div class="research-empty">Die Recherche wurde in die Antwort von Klaro KI eingearbeitet.</div>';
-      return;
+  function cleanWebText(value) {
+    // Web-RSS liefert häufig HTML-Fragmente (z.B. <a href="...">Titel</a>).
+    // Diese dürfen niemals als sichtbarer HTML-Code in der Chatantwort landen.
+    const source = String(value ?? "");
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = source;
+    const decoded = textarea.value;
+    const doc = new DOMParser().parseFromString(decoded, "text/html");
+    return (doc.body?.textContent || decoded)
+      .replace(/\s+/g, " ")
+      .replace(/\s+([,.;:!?])/g, "$1")
+      .trim();
+  }
+
+  function isForecastQuestion(query) {
+    const q = cleanWebText(query).toLowerCase();
+    return /\b(wird|bleibt|übersteht|überstehen|schafft|gewinnt|verliert|kommt|tritt.*zurück|tritt.*zurueck|bis.*bleiben|noch.*jahr|dieses jahr|nächstes jahr|naechstes jahr|zukunft|prognose|wahrscheinlichkeit|wahrscheinlich)\b/.test(q);
+  }
+
+  function buildSourceList(web) {
+    return web.slice(0, 8).map((r) => {
+      const title = cleanWebText(r.title || "");
+      const source = cleanWebText(r.source || "");
+      const date = cleanWebText(r.date || "");
+      if (!title) return "";
+      return `• ${title}${source ? ` — ${source}` : ""}${date ? ` (${date})` : ""}`;
+    }).filter(Boolean).join("\n");
+  }
+
+  function buildWebSynthesis(query, knowledge, web) {
+    const cleanQuery = cleanWebText(query);
+    const knowledgeText = knowledge.slice(0, 5)
+      .map(r => cleanWebText(r.answer || ""))
+      .filter(Boolean);
+    const webItems = uniqueSources(web.slice().sort((a,b)=>relevanceScore(cleanQuery,b)-relevanceScore(cleanQuery,a))).slice(0,10).map(r => ({
+      title: cleanWebText(r.title || ""),
+      summary: cleanWebText(r.summary || ""),
+      source: cleanWebText(r.source || ""),
+      date: cleanWebText(r.date || ""),
+      url: cleanWebText(r.url || "")
+    })).filter(r => r.title || r.summary);
+
+    if (!knowledgeText.length && !webItems.length) return "";
+
+    const terms=tokenize(cleanQuery);
+    const combined=webItems.map(r=>`${r.title} ${r.summary}`.toLowerCase()).join(' ');
+    const matchedTerms=terms.filter(t=>combined.includes(t));
+    const dateValues=webItems.map(r=>Date.parse(r.date)).filter(Number.isFinite).sort((a,b)=>b-a);
+    const newest=dateValues.length?new Date(dateValues[0]).toLocaleDateString('de-DE'):null;
+    const sources=buildSourceList(webItems);
+
+    if (isForecastQuestion(cleanQuery)) {
+      const evidence = webItems.slice(0, 5).map(r => r.summary && r.title && !r.summary.startsWith(r.title) ? `${r.title}: ${r.summary}` : (r.summary || r.title)).join(" ");
+      let reply = `**Kurz gesagt:** Die Frage betrifft eine zukünftige Entwicklung. Die aktuelle Recherche kann den belegten Stand und relevante Voraussetzungen zeigen, aber keinen sicheren Ausgang vorhersagen.`;
+      if (evidence) reply += `\n\n**Was die aktuelle Recherche zeigt:** ${evidence}`;
+      if (knowledgeText.length) reply += `\n\n**Wissensbasis:** ${knowledgeText.slice(0, 3).join(" ")}`;
+      reply += `\n\n**Einordnung:** Die Recherche wurde aus mehreren Suchrichtungen zusammengeführt und doppelte Treffer entfernt. ${newest ? `Der jüngste gefundene Veröffentlichungszeitpunkt ist ${newest}.` : ''}`;
+      reply += `\n\n**Fazit:** Aus den vorliegenden Quellen lässt sich kein sicherer zukünftiger Ausgang ableiten.`;
+      if (sources) reply += `\n\n**Ausgewertete Quellen:**\n${sources}`;
+      return reply;
     }
 
-    const sourceItems = sources
-      .slice(0, 8)
-      .map(source => {
-        const title = String(source.title || source.url || "");
-        const url = String(source.url || "");
-        return url
-          ? `• ${title} — ${url}`
-          : `• ${title}`;
-      })
-      .join("\n");
+    const findings=[];
+    for(const item of webItems.slice(0,6)){
+      const text=item.summary && item.title && !item.summary.startsWith(item.title) ? `${item.title}: ${item.summary}` : (item.summary || item.title);
+      if(text) findings.push(text);
+    }
 
-    researchResults.innerHTML =
-      '<div class="research-empty">Die Recherche wurde in die Antwort von Klaro KI eingearbeitet.</div>';
-    researchResults.dataset.sources = sourceItems;
+    const sections=[];
+    sections.push(`**Recherche-Ergebnis:** Zu „${cleanQuery}“ wurden ${webItems.length} relevante Veröffentlichungen zusammengeführt. ${matchedTerms.length ? `Die Suchtreffer decken ${matchedTerms.length} zentrale Begriffe der Frage ab.` : ''}`);
+    if(findings.length) sections.push(`**Wesentliche Befunde:** ${findings.join(" ")}`);
+    if(knowledgeText.length) sections.push(`**Ergänzung aus der Wissensbasis:** ${knowledgeText.slice(0,3).join(" ")}`);
+    if(sources) sections.push(`**Quellen:**\n${sources}`);
+    return sections.join("\n\n");
   }
+
 
   async function ask(query) {
     researchStatus.textContent="RECHERCHE LÄUFT …";
-    researchResults.innerHTML='<div class="research-empty">Wissensbasis und aktuelle Quellen werden durch Klaro KI ausgewertet …</div>';
+    researchResults.innerHTML='<div class="research-empty">Wissensbasis und Webquellen werden ausgewertet …</div>';
+    let knowledge=[], web=[], errors=[];
+    try{knowledge=await knowledgeSearch(query)}catch(e){errors.push("Wissensbasis: "+e.message)}
+    try{web=await webSearch(query)}catch(e){errors.push("Websuche: "+e.message)}
 
-    let knowledge=[];
-    let errors=[];
+    renderResearch(knowledge, web);
+    researchStatus.textContent=errors.length ? "TEILWEISE VERFÜGBAR" : "RECHERCHE ABGESCHLOSSEN";
 
-    try {
-      knowledge=await knowledgeSearch(query);
-    } catch(e) {
-      errors.push("Wissensbasis: " + e.message);
+    let reply = buildWebSynthesis(query, knowledge, web);
+    if (!reply) {
+      reply = "Ich konnte zu dieser Frage derzeit keine verwertbaren Informationen aus der Wissensbasis oder der Webrecherche zusammenstellen.";
     }
-
-    const aiResult = await geminiResearch(query, knowledge);
-
-    renderResearch(knowledge, aiResult);
-
-    researchStatus.textContent =
-      errors.length
-        ? "TEILWEISE VERFÜGBAR"
-        : "RECHERCHE ABGESCHLOSSEN";
-
-    let reply = aiResult.answer;
-
-    if (errors.length) {
-      reply += "\n\nHinweis: " + errors.join(" · ");
-    }
-
+    if (errors.length) reply += "\n\nHinweis: " + errors.join(" · ");
     return reply;
   }
 
@@ -161,20 +207,18 @@
     addMessage(q,"user"); input.value=""; input.style.height="auto";
     const aiStartedAt=Date.now();
     window.klaroAnalyticsTrack?.("ai_interaction", { metadata:{type:"ai_question"} });
-    addMessage("Ich recherchiere in der Wissensbasis und in aktuellen Quellen …","assistant");
+    addMessage("Ich recherchiere in der Wissensbasis und im Web …","assistant");
     try{
       const reply=await ask(q);
       const last=messages.querySelector(".message:last-child .message-bubble");
       if(last) last.textContent=reply;
-      window.klaroAnalyticsTrack?.("ai_result", { ai_duration_ms:Date.now()-aiStartedAt, ai_success:true, metadata:{type:"ai_result", model:"gemini"} });
+      window.klaroAnalyticsTrack?.("ai_result", { ai_duration_ms:Date.now()-aiStartedAt, ai_success:true, metadata:{type:"ai_result"} });
     }catch(err){
       const last=messages.querySelector(".message:last-child .message-bubble");
       if(last) last.textContent="Recherchefehler: "+err.message;
-      researchStatus.textContent="RECHERCHE FEHLGESCHLAGEN";
-      window.klaroAnalyticsTrack?.("ai_result", { ai_duration_ms:Date.now()-aiStartedAt, ai_success:false, metadata:{type:"ai_error", model:"gemini"} });
+      window.klaroAnalyticsTrack?.("ai_result", { ai_duration_ms:Date.now()-aiStartedAt, ai_success:false, metadata:{type:"ai_error"} });
     }
   });
-
   input.addEventListener("keydown",e=>{
     if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();form.requestSubmit();}
   });
@@ -237,7 +281,7 @@
       callback(Boolean(allowed));
     });
   }
-  function refreshConsent(){ 
+  function refreshConsent(){
     measurementConsent(allowed => {
       consent=allowed;
       if(consent){ startAnalytics(); }
